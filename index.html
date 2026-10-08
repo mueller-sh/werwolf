@@ -106,6 +106,12 @@ function elig(name){
   if(name==='Tageshinrichtung') return a;
   return a;
 }
+function neighbors(mid){
+  let left=null,right=null,idx=mid-1;
+  for(let d=1;d<=G.n;d++){let k=(idx-d+G.n)%G.n;if(G.players[k].alive){left=G.players[k].n;break}}
+  for(let d=1;d<=G.n;d++){let k=(idx+d+G.n)%G.n;if(G.players[k].alive){right=G.players[k].n;break}}
+  return [left,mid,right].filter((x,i,a)=>x&&a.indexOf(x)===i);
+}
 function card(x,name){
   let ok=x.alive&&elig(name).some(y=>y.n===x.n);
   if(name==='Seherin'&&G.night>=2) ok=false;
