@@ -174,15 +174,7 @@ function resolveNight(){
   if(!G.gameOver){G.phase='day';G.step=0;G.reaction=null;let hunter=G.players.find(x=>!x.alive&&x.role==='Jäger'&&!x.status.includes('Jägerschuss erledigt'));if(hunter){hunter.status.push('Jägerschuss erledigt');G.reaction={type:'hunter',actor:hunter.n};}}
   save();render();
 }
-function skip(){snap();note('Übersprungen: '+cur()[0]);if(cur()[0]==='Tagesbeginn')resolveNight();else{sel.clear();G.step=Math.min(G.step+1,steps().length-1);save();render()}}
-function undo(){if(!G?.hist.length)return;G=JSON.parse(G.hist.pop());sel.clear();save();render()}
-function note(x){G.log.push(new Date().toLocaleTimeString('de-DE')+' – '+x)}
-function save(){localStorage.setItem('werwolf30',JSON.stringify(G))}
-function loadGame(){let x=localStorage.getItem('werwolf30');if(x){G=JSON.parse(x);sel.clear();render()}}
-function exportGame(){if(!G)return;let a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(G,null,2)],{type:'application/json'}));a.download='werwolf-spielstand.json';a.click()}
-function table(){return '<div style="overflow:auto"><table><tr><th>#</th><th>Rolle</th><th>Lager</th><th>Status</th><th>Fähigkeiten</th></tr>'+G.players.map(x=>'<tr><td>'+x.n+'</td><td>'+esc(x.role)+'</td><td>'+x.lager+'</td><td>'+(x.alive?'lebend':'tot')+(x.verliebt?' · ❤️ '+x.verliebt:'')+(x.vorbild?' · Vorbild: '+x.vorbild:'')+(x.verzaubert?' · verzaubert':'')+'</td><td>'+Object.entries(x.abilities||{}).filter(([,v])=>v).map(([k])=>k).join(', ')+'</td></tr>').join('')+'</table></div>'}
-function view(x){['m','p','l'].forEach(y=>{document.getElementById(y).style.display=y===x?'block':'none';document.getElementById('t'+y).classList.toggle('on',y===x)});render()}render();
-</script></body></htmlfunction kill(n,w){
+function kill(n,w){
   let q=P(n);if(!q||!q.alive)return;
   q.alive=false;q.death={cause:w,night:G.night,day:G.day};note('☠ '+n+' ('+q.role+') stirbt: '+w);
   if(q.lager==='Wolf'&&q.role!=='Weißer Wolf'){
@@ -233,15 +225,4 @@ function loadGame(){let x=localStorage.getItem('werwolf30');if(x){G=JSON.parse(x
 function exportGame(){if(!G)return;let a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(G,null,2)],{type:'application/json'}));a.download='werwolf-spielstand.json';a.click()}
 function table(){return '<div style="overflow:auto"><table><tr><th>#</th><th>Rolle</th><th>Lager</th><th>Status</th><th>Fähigkeiten</th></tr>'+G.players.map(x=>'<tr><td>'+x.n+'</td><td>'+esc(x.role)+'</td><td>'+x.lager+'</td><td>'+(x.alive?'lebend':'tot')+(x.verliebt?' · ❤️ '+x.verliebt:'')+(x.vorbild?' · Vorbild: '+x.vorbild:'')+(x.verzaubert?' · verzaubert':'')+'</td><td>'+Object.entries(x.abilities||{}).filter(([,v])=>v).map(([k])=>k).join(', ')+'</td></tr>').join('')+'</table></div>'}
 function view(x){['m','p','l'].forEach(y=>{document.getElementById(y).style.display=y===x?'block':'none';document.getElementById('t'+y).classList.toggle('on',y===x)});render()}render();
-</script></body></htmlfunction kill(n,w){
-  let q=P(n);if(!q||!q.alive)return;
-  q.alive=false;q.death={cause:w,night:G.night,day:G.day};note('☠ '+n+' ('+q.role+') stirbt: '+w);
-  if(q.lager==='Wolf'&&q.role!=='Weißer Wolf'){
-    G.players.filter(x=>x.role==='Großer böser Wolf').forEach(x=>{if(x.abilities.bigwolf){x.abilities.bigwolf=false;note('🐺 Großer böser Wolf verliert den Zusatzangriff.');}});
-  }
-  if(q.role==='Ritter der rostigen Klinge'&&(w==='Nacht')){
-    let target=null;for(let d=1;d<=G.n;d++){let idx=(q.n-1-d+G.n)%G.n,cand=G.players[idx];if(cand.alive&&cand.lager==='Wolf'&&cand.role!=='Weißer Wolf'){target=cand.n;break;}}
-    if(target)G.knightTarget=target;
-  }
-  if(q.role==='Alter Mann'&&w!=='Nacht'){G.players.filter(x=>x.lager==='Dorf'&&x.role!=='Alter Mann').forEach(x=>x.status.push('Dorffähigkeit verloren (Alter)'));note('🛡 Alter stirbt – Dorffähigkeiten verfallen.');}
-}>
+</script></body></html>
