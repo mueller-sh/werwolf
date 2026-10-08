@@ -17,30 +17,55 @@ const W=['Werwolf','Wolfshund','Urwolf','Großer böser Wolf','Weißer Wolf'];
 const esc=x=>String(x).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const P=n=>G.players[n-1], isW=r=>W.includes(r);
 function roles(n){
-  // Standard C aus Notion: möglichst viele Sonderrollen, feste Wolfs-/Potenzialslots.
+  // AKTIVER WERWOLF-3.0-STANDARD:
+  // 10: 2 WW
+  // 11-13: 2 WW + Wolfshund
+  // 14-17: 2 WW + Wolfshund + Urwolf
+  // 18-21: 2 WW + Wolfshund + Urwolf + Weißer Wolf
+  // 22-27: 2 WW + Wolfshund + Urwolf + Weißer Wolf + Großer böser Wolf
+  // 28: 3 WW + Wolfshund + Urwolf + Weißer Wolf + Großer böser Wolf
+  // Das Wilde Kind ist eine eigene Wechselrolle und KEIN fester Wolfsplatz.
   let a=[];
   if(n<=10) a.push('Werwolf','Werwolf');
   else if(n<=13) a.push('Werwolf','Werwolf','Wolfshund');
-  else if(n<=17) a.push('Werwolf','Werwolf','Werwolf','Wolfshund');
-  else if(n<=21) a.push('Werwolf','Werwolf','Werwolf','Wolfshund','Wildes Kind');
-  else a.push('Werwolf','Werwolf','Werwolf','Wolfshund','Wildes Kind','Urwolf');
+  else if(n<=17) a.push('Werwolf','Werwolf','Wolfshund','Urwolf');
+  else if(n<=21) a.push('Werwolf','Werwolf','Wolfshund','Urwolf','Weißer Wolf');
+  else if(n<=27) a.push('Werwolf','Werwolf','Wolfshund','Urwolf','Weißer Wolf','Großer böser Wolf');
+  else a.push('Werwolf','Werwolf','Werwolf','Wolfshund','Urwolf','Weißer Wolf','Großer böser Wolf');
 
-  // Sonderrollen-Priorität aus dem verbindlichen Rollenstandard.
-  const special=['Amor','Hexe','Seherin','Kleines Mädchen','Jäger','Alter Mann','Ritter der rostigen Klinge',
-                 'Flötenspieler','Weißer Wolf','Fuchs','Zwei Schwestern','Zwei Schwestern','Großer böser Wolf'];
-  for(const r of special){ if(a.length<n) a.push(r); }
-
+  // Aktive Sonderrollen-Priorität. Zwei Schwestern sind unteilbar:
+  // beide werden nur gemeinsam aufgenommen.
+  const special=[
+    ['Amor'],['Hexe'],['Seherin'],['Wildes Kind'],['Kleines Mädchen'],['Jäger'],
+    ['Alter Mann'],['Ritter der rostigen Klinge'],['Flötenspieler'],['Fuchs'],
+    ['Zwei Schwestern','Zwei Schwestern']
+  ];
+  for(const group of special){
+    if(a.length+group.length<=n) a.push(...group);
+  }
   while(a.length<n) a.push('Dorfbewohner');
+
+  // Sicherheitsprüfung: niemals eine Einzel-Schwester erzeugen.
+  if(a.filter(r=>r==='Zwei Schwestern').length===1){
+    a[a.indexOf('Zwei Schwestern')]='Dorfbewohner';
+  }
   for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}
   return a;
 }
 const S1=[['Amor','Zwei Verliebte bestimmen'],['Wildes Kind','Vorbild bestimmen'],['Wolfshund','Lager endgültig wählen'],['Seherin','Eine lebende Person prüfen'],['Fuchs','Mitte einer Dreiergruppe prüfen'],['Werwölfe','Reguläres Wolfsopfer wählen'],['Urwolf','Optional: das bereits gewählte Wolfsopfer infizieren'],['Großer böser Wolf','Optional: ein zusätzliches Dorfopfer'],['Hexe-Heilung','Optional: genau ein heilbares Wolfsopfer retten'],['Hexe-Gift','Optional: genau eine zulässige Person vergiften'],['Weißer Wolf','Nur gerade Nächte: anderen Wolf als Sonderopfer wählen'],['Flötenspieler','Bis zu zwei neue Personen verzaubern'],['Tagesbeginn','Nacht abwickeln']];
 const SN=[['Seherin','Ergebnis direkt anzeigen – keine erneute Zielauswahl'],['Fuchs','Mitte einer Dreiergruppe prüfen'],['Werwölfe','Reguläre Wolfsopfer wählen'],['Urwolf','Optional: das bereits gewählte Wolfsopfer infizieren'],['Großer böser Wolf','Optional: ein zusätzliches Dorfopfer'],['Hexe-Heilung','Optional: genau ein heilbares Wolfsopfer retten'],['Hexe-Gift','Optional: genau eine zulässige Person vergiften'],['Weißer Wolf','Nur gerade Nächte: anderen Wolf als Sonderopfer wählen'],['Flötenspieler','Bis zu zwei neue Personen verzaubern'],['Tagesbeginn','Nacht abwickeln']];
+function validateRoles(r,n){
+  const sisters=r.filter(x=>x==='Zwei Schwestern').length;
+  if(sisters!==0&&sisters!==2) throw new Error('Zwei Schwestern müssen immer gemeinsam vergeben werden.');
+  const expected = n<=10?2:n<=13?3:n<=17?4:n<=21?5:n<=27?6:7;
+  const wolfSlots=r.filter(x=>['Werwolf','Wolfshund','Urwolf','Weißer Wolf','Großer böser Wolf'].includes(x)).length;
+  if(wolfSlots!==expected) throw new Error('Fehler in der Wolfsverteilung: '+wolfSlots+'/'+expected);
+}
 function newGame(){
-  let n=+cnt.value,r=roles(n);
+  let n=+cnt.value,r=roles(n); validateRoles(r,n);
   G={version:'werwolf-3.0.1',n,speed:spd.value,night:1,day:0,step:0,phase:'night',
      pending:[],hist:[],log:[],captain:null,gameOver:false,substep:null,
-     players:r.map((role,i)=>({n:i+1,role,lager:isW(role)?'Wolf':role==='Flötenspieler'?'Einzelgänger':'Dorf',
+     players:r.map((role,i)=>({n:i+1,role,lager:isW(role)?'Wolf':role==='Flötenspieler'?'Einzelgänger':(role==='Weißer Wolf'?'Einzelgänger':'Dorf'),
        alive:true,verliebt:null,vorbild:null,verzaubert:false,status:[],
        abilities:{heal:role==='Hexe',poison:role==='Hexe',infection:role==='Urwolf',fox:role==='Fuchs',
                   bigwolf:role==='Großer böser Wolf',oldShield:role==='Alter Mann',angelFirst:true}}))};
