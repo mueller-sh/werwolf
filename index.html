@@ -187,7 +187,28 @@ function view(x){['m','p','l'].forEach(y=>{document.getElementById(y).style.disp
     if(target)G.knightTarget=target;
   }
   if(q.role==='Alter Mann'&&w!=='Nacht'){G.players.filter(x=>x.lager==='Dorf'&&x.role!=='Alter Mann').forEach(x=>x.status.push('Dorffähigkeit verloren (Alter)'));note('🛡 Alter stirbt – Dorffähigkeiten verfallen.');}
-}function checkWin(){
+}function finishDay(){
+  if(G.knightTarget&&P(G.knightTarget)?.alive){kill(G.knightTarget,'Ritter der rostigen Klinge');G.knightTarget=null;}
+  // Death chains after daytime execution
+  let changed=true;
+  while(changed){
+    changed=false;
+    for(const q of G.players.filter(x=>!x.alive&&x.verliebt)){
+      let l=P(q.verliebt);if(l?.alive){kill(l.n,'Liebeskummer');changed=true;}
+    }
+    let hunter=G.players.find(x=>!x.alive&&x.role==='Jäger'&&!x.status.includes('Jägerschuss erledigt'));
+    if(hunter){hunter.status.push('Jägerschuss erledigt');G.reaction={type:'hunter',actor:hunter.n};sel.clear();save();render();return;}
+  }
+  if(G.captain&&!P(G.captain)?.alive){G.reaction={type:'captain'};sel.clear();save();render();return;}
+  checkWin();
+  if(!G.gameOver){
+    G.players.filter(x=>x.alive&&x.role==='Wildes Kind'&&x.vorbild&&(!P(x.vorbild)?.alive)&&x.lager==='Dorf').forEach(x=>{
+      x.lager='Wolf';x.status.push('verwandelt – Wolfsrudel');note('🌙 Wildes Kind '+x.n+' verwandelt sich zum Wolf.');
+    });
+    G.phase='night';G.step=0;G.reaction=null;save();render();
+  }
+}
+function checkWin(){
   let alive=G.players.filter(x=>x.alive),wolves=alive.filter(x=>x.lager==='Wolf'),village=alive.filter(x=>x.lager==='Dorf');
   let white=alive.find(x=>x.role==='Weißer Wolf'),flute=alive.find(x=>x.role==='Flötenspieler');
   if(white && alive.length===1){G.gameOver=true;note('🏆 Weißer Werwolf gewinnt allein.');return true;}
