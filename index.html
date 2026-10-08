@@ -7,7 +7,7 @@
 </style></head><body>
 <header><h1>🐺 Werwolf 3.0</h1><div class="sub">Interaktive Spielleitung · Testversion</div></header>
 <main>
-<div class="box toolbar"><label>Spieler <select id="cnt"><option>12</option><option>15</option><option>18</option><option>21</option><option>24</option><option>27</option><option>30</option><option>32</option></select></label><label>Tempo <select id="spd"><option value="45">45 Minuten</option><option value="90">90 Minuten</option><option value="classic">Klassisch</option></select></label><button onclick="newGame()">Neue Partie</button><button class="secondary" onclick="loadGame()">Laden</button><button class="secondary" onclick="exportGame()">Export</button></div>
+<div class="box toolbar"><label>Spieler <select id="cnt"><option>10</option><option>11</option><option>12</option><option>13</option><option>14</option><option>15</option><option>16</option><option>17</option><option>18</option><option>19</option><option>20</option><option>21</option><option>22</option><option>23</option><option>24</option><option>25</option><option>26</option><option>27</option><option>28</option></select></label><label>Tempo <select id="spd"><option value="45">45 Minuten</option><option value="90">90 Minuten</option><option value="classic">Klassisch</option></select></label><button onclick="newGame()">Neue Partie</button><button class="secondary" onclick="loadGame()">Laden</button><button class="secondary" onclick="exportGame()">Export</button></div>
 <div class="box phase"><div><b id="phase">Keine Partie</b><div class="sub" id="hint">Neue Partie starten.</div></div><b id="alive">–</b></div>
 <div class="box"><div class="tabs"><button id="tm" class="on" onclick="view('m')">Moderation</button><button id="tp" onclick="view('p')">Spielübersicht</button><button id="tl" onclick="view('l')">Protokoll</button></div><div id="m"></div><div id="p" style="display:none"></div><div id="l" style="display:none"></div></div>
 </main>
@@ -16,7 +16,37 @@ let G=null,sel=new Set();
 const W=['Werwolf','Urwolf','Großer böser Wolf','Weißer Wolf'];
 const esc=x=>String(x).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const P=n=>G.players[n-1], isW=r=>W.includes(r);
-function roles(n){let w=n<=12?3:n<=15?4:n<=18?5:n<=21?6:n<=24?7:n<=27?8:9,a=[];for(let i=0;i<w;i++)a.push(i===0&&n>=18?'Urwolf':'Werwolf');if(n>=21)a.push('Großer böser Wolf');if(n>=18)a.push('Weißer Wolf');['Seherin','Hexe','Fuchs','Wildes Kind','Jäger','Ritter der rostigen Klinge','Wolfshund','Kleines Mädchen','Flötenspieler'].forEach(r=>{if(a.length<n)a.push(r)});if(n>=12){let i1=a.indexOf('Dorfbewohner'),i2=a.indexOf('Dorfbewohner',i1+1);if(i1>=0&&i2>=0){a[i1]='Zwei Schwestern';a[i2]='Zwei Schwestern'}};while(a.length<n)a.push('Dorfbewohner');for(let i=a.length-1;i;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function roles(n){
+  // Verbindlicher Rollenstandard, 10–28 Spieler.
+  // Wolfsstaffel:
+  // 10: 2 WW
+  // 11–13: 2 WW + Wolfshund
+  // 14–17: 2 WW + Wolfshund + Urwolf
+  // 18–21: + Weißer Wolf
+  // 22–27: + Großer böser Wolf
+  // 28: zusätzlich 1 regulärer Werwolf
+  let wolves;
+  if(n<=10) wolves=['Werwolf','Werwolf'];
+  else if(n<=13) wolves=['Werwolf','Werwolf','Wolfshund'];
+  else if(n<=17) wolves=['Werwolf','Werwolf','Wolfshund','Urwolf'];
+  else if(n<=21) wolves=['Werwolf','Werwolf','Wolfshund','Urwolf','Weißer Wolf'];
+  else if(n<=27) wolves=['Werwolf','Werwolf','Wolfshund','Urwolf','Weißer Wolf','Großer böser Wolf'];
+  else wolves=['Werwolf','Werwolf','Werwolf','Wolfshund','Urwolf','Weißer Wolf','Großer böser Wolf'];
+
+  // Sonderrollen nach der verbindlichen Priorität.
+  // Zwei Schwestern sind zwei Karten und werden immer gemeinsam vergeben.
+  let specials=['Seherin','Hexe','Amor','Fuchs','Jäger','Kleines Mädchen'];
+  if(n>=14) specials.push('Wildes Kind');
+  if(n>=18) specials.push('Alter Mann','Ritter der rostigen Klinge','Zwei Schwestern','Zwei Schwestern');
+  if(n>=22) specials.push('Flötenspieler');
+
+  let a=[...wolves,...specials];
+  while(a.length<n) a.push('Dorfbewohner');
+
+  // Bei 10–28 passt die Verteilung exakt: keine einzelne Schwester.
+  for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}
+  return a;
+}
 const S1=[['Amor','Wähle zwei Verliebte'],['Wildes Kind','Wähle das Vorbild'],['Wolfshund','Lager festlegen'],['Seherin','Eine Person prüfen'],['Fuchs','Mitte einer Dreiergruppe wählen'],['Werwölfe','Wolfsopfer wählen'],['Urwolf','Optional: Opfer infizieren'],['Großer böser Wolf','Optional: Zusatzopfer'],['Hexe','Heilen oder vergiften'],['Weißer Wolf','Gerade Nächte: anderen Wolf wählen'],['Flötenspieler','Bis zu zwei verzaubern'],['Tagesbeginn','Nacht abwickeln']];
 const SN=[['Seherin','Ergebnis direkt anzeigen – keine Auswahl'],['Fuchs','Mitte einer Dreiergruppe wählen'],['Werwölfe','Wolfsopfer wählen'],['Urwolf','Optional: Opfer infizieren'],['Großer böser Wolf','Optional: Zusatzopfer'],['Hexe','Heilen oder vergiften'],['Weißer Wolf','Gerade Nächte: anderen Wolf wählen'],['Flötenspieler','Bis zu zwei verzaubern'],['Tagesbeginn','Nacht abwickeln']];
 function newGame(){let n=+cnt.value,r=roles(n);G={n,speed:spd.value,night:1,day:0,step:0,phase:'night',pending:[],hist:[],log:[],players:r.map((role,i)=>({n:i+1,role,lager:isW(role)?'Wolf':role==='Flötenspieler'?'Einzelgänger':'Dorf',alive:true,verliebt:null,vorbild:null,verzaubert:false,status:[]}))};sel.clear();let sisters=G.players.filter(x=>x.role==='Zwei Schwestern');if(sisters.length===2){sisters[0].status.push('Schwester von '+sisters[1].n);sisters[1].status.push('Schwester von '+sisters[0].n);note('👭 Zwei Schwestern: '+sisters[0].n+' und '+sisters[1].n)}note('Neue Partie gestartet');save();render()}
