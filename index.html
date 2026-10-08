@@ -13,7 +13,7 @@
 </main>
 <script>
 let G=null,sel=new Set();
-const W=['Werwolf','Urwolf','Großer böser Wolf','Weißer Wolf'];
+const W=['Werwolf','Wolfshund','Urwolf','Großer böser Wolf','Weißer Wolf'];
 const esc=x=>String(x).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const P=n=>G.players[n-1], isW=r=>W.includes(r);
 function roles(n){
@@ -27,7 +27,7 @@ function roles(n){
 
   // Sonderrollen-Priorität aus dem verbindlichen Rollenstandard.
   const special=['Amor','Hexe','Seherin','Kleines Mädchen','Jäger','Alter Mann','Ritter der rostigen Klinge',
-                 'Flötenspieler','Weißer Werwolf','Fuchs','Zwei Schwestern','Zwei Schwestern','Großer böser Wolf'];
+                 'Flötenspieler','Weißer Wolf','Fuchs','Zwei Schwestern','Zwei Schwestern','Großer böser Wolf'];
   for(const r of special){ if(a.length<n) a.push(r); }
 
   while(a.length<n) a.push('Dorfbewohner');
@@ -40,7 +40,7 @@ function newGame(){
   let n=+cnt.value,r=roles(n);
   G={version:'werwolf-3.0-notion',n,speed:spd.value,night:1,day:0,step:0,phase:'night',
      pending:[],hist:[],log:[],captain:null,gameOver:false,substep:null,
-     players:r.map((role,i)=>({n:i+1,role,lager:isW(role)?'Wolf':role==='Flötenspieler'||role==='Weißer Wolf'?'Einzelgänger':'Dorf',
+     players:r.map((role,i)=>({n:i+1,role,lager:isW(role)?'Wolf':role==='Flötenspieler'?'Einzelgänger':'Dorf',
        alive:true,verliebt:null,vorbild:null,verzaubert:false,status:[],
        abilities:{heal:role==='Hexe',poison:role==='Hexe',infection:role==='Urwolf',fox:role==='Fuchs',
                   bigwolf:role==='Großer böser Wolf',oldShield:role==='Alter Mann',angelFirst:true}}))};
