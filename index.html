@@ -54,7 +54,14 @@ function newGame(){
   note('Neue Partie: '+n+' Spieler · '+G.speed);
   save();render();
 }
+const DAY=[['Hauptmann','Nur nach der ersten Nacht bzw. nach dem Tod des Hauptmanns: lebenden Nachfolger wählen'],['Tageshinrichtung','Alle zulässigen lebenden Ziele gleichzeitig auswählen'],['Tagesende','Todesketten abschließen und nächste Nacht starten']];
 function steps(){
+  if(G.phase==='day'){
+    return DAY.filter(([r])=>{
+      if(r==='Hauptmann') return !G.captain || !P(G.captain)?.alive;
+      return true;
+    });
+  }
   let base=G.night===1?S1:SN;
   return base.filter(([r])=>{
     if(r==='Tagesbeginn') return true;
@@ -72,7 +79,10 @@ function actor(name){return G.players.find(x=>x.alive&&x.role===name)}
 function need(name){
   if(name==='Amor') return 2;
   if(name==='Werwölfe') return G.speed==='classic'?1:(G.speed==='90'?(G.night<=3?1:G.night<=5?2:G.night<=7?3:4):(G.night===1?1:G.night<=3?2:G.night<=6?3:4));
-  if(name==='Flötenspieler') return 2;
+  if(name==='Tageshinrichtung'){
+    return G.speed==='classic'?1:(G.speed==='90'?(G.day<=3?1:G.day<=5?2:G.day<=7?3:4):(G.day===1?1:G.day<=3?2:G.day<=6?3:4));
+  }
+  if(name==='Flötenspieler') return Math.min(2,G.players.filter(x=>x.alive&&x.role!=='Flötenspieler'&&!x.verzaubert).length);
   return 1;
 }
 function elig(name){
@@ -83,12 +93,14 @@ function elig(name){
   if(name==='Seherin') return a.filter(x=>x.n!==me?.n);
   if(name==='Fuchs') return a;
   if(name==='Werwölfe') return a.filter(x=>x.lager==='Dorf');
-  if(name==='Urwolf') return G.pending.filter(x=>x.type==='wolf'&&G.players.find(y=>y.n===x.target)?.alive).map(x=>P(x.target));
+  if(name==='Urwolf') return G.pending.filter(x=>x.type==='wolf'&&P(x.target)?.alive).map(x=>P(x.target));
   if(name==='Großer böser Wolf') return a.filter(x=>x.lager==='Dorf'&&!G.pending.some(y=>y.target===x.n));
-  if(name==='Hexe-Heilung') return G.pending.filter(x=>(x.type==='wolf'||x.type==='bigwolf')&&x.target!==undefined).map(x=>P(x.target)).filter(x=>x?.alive&&x.role!=='Weißer Wolf');
-  if(name==='Hexe-Gift') return a.filter(x=>x.role!=='Hexe' && !G.pending.some(y=>y.target===x.n&&y.type==='poison') && !G.pending.some(y=>y.target===x.n&&y.type==='healed'));
+  if(name==='Hexe-Heilung') return G.pending.filter(x=>(x.type==='wolf'||x.type==='bigwolf')&&P(x.target)?.alive).map(x=>P(x.target)).filter(x=>x&&x.role!=='Weißer Wolf');
+  if(name==='Hexe-Gift') return a.filter(x=>x.role!=='Hexe'&&!G.pending.some(y=>y.target===x.n&&y.type==='healed')&&!G.pending.some(y=>y.target===x.n&&y.type==='poison'));
   if(name==='Weißer Wolf') return a.filter(x=>x.lager==='Wolf'&&x.role!=='Weißer Wolf');
   if(name==='Flötenspieler') return a.filter(x=>x.n!==me?.n&&!x.verzaubert);
+  if(name==='Hauptmann') return a;
+  if(name==='Tageshinrichtung') return a;
   return a;
 }
 function card(x,name){
@@ -102,7 +114,7 @@ function card(x,name){
   if(G.captain===x.n)tags.push('Hauptmann');
   return '<div class="card '+(sel.has(x.n)?'sel ':'')+(!x.alive?'dead':'')+'" onclick="'+(ok?'pick('+x.n+')':'')+'"><div class="num">'+x.n+'</div><div class="role">'+esc(x.role)+'</div>'+tags.map(t=>'<span class="tag '+(t==='Wolf'?'wolf':t==='Dorf'?'dorf':'')+'">'+esc(t)+'</span>').join('')+'</div>';
 }
-function render(){if(!G){m.innerHTML='<div class="msg">Neue Partie starten.</div>';return}let[n,h]=cur();phase.textContent=(G.phase==='night'?'Nacht '+G.night:'Tag '+G.day)+' · '+n;hint.textContent=h;alive.textContent=G.players.filter(x=>x.alive).length;let extra=n==='Seherin'&&G.night>=2?'<div class="msg">🔮 Seherin: Ergebnis wird automatisch angezeigt; keine Auswahl.</div>':n==='Tagesbeginn'?'<div class="msg">☀️ Nachtopfer und Todesketten werden jetzt abgewickelt.</div>':'';let k=need(n),ok=n==='Tagesbeginn'||(n==='Seherin'&&G.night>=2)||sel.size===k;m.innerHTML=(n==='Wolfshund'?'<div class="msg">🐺 Wolfshund: endgültige Lagerwahl</div><div class="actions"><button onclick="wolfhoundChoice(\'Dorf\')">🏠 Dorf</button><button onclick="wolfhoundChoice(\'Wolf\')">🐺 Wolfsrudel</button></div>':'<div class="grid">'+G.players.map(x=>card(x,n)).join('')+'</div>'+extra+'<div class="actions"><button onclick="confirmAction()" '+(ok?'':'disabled')+'>'+(n==='Tagesbeginn'?'Nacht abwickeln':'Bestätigen ('+sel.size+'/'+k+')')+'</button><button class="secondary" onclick="skip()">Überspringen</button><button class="secondary" onclick="undo()">↶ Rückgängig</button></div>');p.innerHTML=table();l.innerHTML='<div class="log">'+esc(G.log.join('\n'))+'</div>'}
+function render(){if(!G){m.innerHTML='<div class="msg">Neue Partie starten.</div>';return}let[n,h]=cur();phase.textContent=(G.phase==='night'?'Nacht '+G.night:'Tag '+G.day)+' · '+n;hint.textContent=h;alive.textContent=G.players.filter(x=>x.alive).length;let extra=n==='Seherin'&&G.night>=2?'<div class="msg">🔮 Seherin: Ergebnis wird automatisch angezeigt; keine Auswahl.</div>':n==='Tagesbeginn'?'<div class="msg">☀️ Nachtopfer und Todesketten werden jetzt abgewickelt.</div>':'';let k=need(n),ok=n==='Tagesbeginn'||n==='Tagesende'||(n==='Seherin'&&G.night>=2)||sel.size===k;if(n==='Hauptmann'||n==='Tageshinrichtung')ok=sel.size===k;m.innerHTML=(G.gameOver?'<div class="msg">🏆 Partie beendet. '+esc(G.log[G.log.length-1]||'')+'</div>':n==='Wolfshund'?'<div class="msg">🐺 Wolfshund: endgültige Lagerwahl</div><div class="actions"><button onclick="wolfhoundChoice(\'Dorf\')">🏠 Dorf</button><button onclick="wolfhoundChoice(\'Wolf\')">🐺 Wolfsrudel</button></div>':'<div class="grid">'+G.players.map(x=>card(x,n)).join('')+'</div>'+extra+'<div class="actions"><button onclick="confirmAction()" '+(ok?'':'disabled')+'>'+(n==='Tagesbeginn'?'Nacht abwickeln':'Bestätigen ('+sel.size+'/'+k+')')+'</button><button class="secondary" onclick="skip()">Überspringen</button><button class="secondary" onclick="undo()">↶ Rückgängig</button></div>');p.innerHTML=table();l.innerHTML='<div class="log">'+esc(G.log.join('\n'))+'</div>'}
 function wolfhoundChoice(lager){
   snap();let q=actor('Wolfshund');if(q){q.lager=lager;q.status.push('Wolfshund: '+lager);note('🐺 Wolfshund wählt '+lager+'.');}
   G.step=Math.min(G.step+1,steps().length-1);save();render();
@@ -111,13 +123,15 @@ function pick(n){let[nm]=cur(),k=need(nm);if(sel.has(n))sel.delete(n);else if(se
 function snap(){G.hist.push(JSON.stringify(G));if(G.hist.length>30)G.hist.shift()}
 function confirmAction(){
   let[nm]=cur(),c=[...sel];snap();
-  if(nm==='Amor'){P(c[0]).verliebt=c[1];P(c[1]).verliebt=c[0];note('❤️ Verliebte: '+c[0]+' und '+c[1]);}
+  if(nm==='Hauptmann'){G.captain=c[0];note('🎖 Hauptmann: '+c[0]);}
+  else if(nm==='Tageshinrichtung'){note('⚖️ Hinrichtungen: '+c.join(', '));c.forEach(n=>{if(P(n)?.alive)kill(n,'Tageshinrichtung')});finishDay();}
+  else if(nm==='Tagesende'){finishDay();}
+  else if(nm==='Amor'){P(c[0]).verliebt=c[1];P(c[1]).verliebt=c[0];note('❤️ Verliebte: '+c[0]+' und '+c[1]);}
   else if(nm==='Wildes Kind'){let q=actor('Wildes Kind');if(q)q.vorbild=c[0];note('🌱 Vorbild: '+c[0]);}
-  else if(nm==='Wolfshund'){/* Auswahl erfolgt über Lagerbuttons */}
   else if(nm==='Seherin'){note('🔮 Seherin prüft '+c[0]+': '+P(c[0]).lager);}
-  else if(nm==='Fuchs'){let ids=neighbors(c[0]),wolf=ids.some(n=>P(n).lager==='Wolf');let q=actor('Fuchs');note('🦊 Fuchsprüfung '+ids.join(', ')+' → '+(wolf?'Wolf vorhanden; Fähigkeit bleibt':'kein Wolf; Fähigkeit verloren'));if(q&&!wolf)q.abilities.fox=false;}
-  else if(nm==='Werwölfe'){c.forEach(n=>G.pending.push({type:'wolf',target:n}));note('🐺 Reguläre Wolfsopfer vorgemerkt: '+c.join(', '));}
-  else if(nm==='Urwolf'&&c[0]){G.pending=G.pending.filter(x=>x.target!==c[0]||x.type!=='wolf');P(c[0]).lager='Wolf';P(c[0]).status.push('infiziert');actor('Urwolf').abilities.infection=false;note('🧬 '+c[0]+' infiziert; überlebt den Wolfsangriff.');}
+  else if(nm==='Fuchs'){let ids=neighbors(c[0]),wolf=ids.some(n=>P(n).lager==='Wolf'),q=actor('Fuchs');note('🦊 Fuchsprüfung '+ids.join(', ')+' → '+(wolf?'Wolf vorhanden; Fähigkeit bleibt':'kein Wolf; Fähigkeit verloren'));if(q&&!wolf)q.abilities.fox=false;}
+  else if(nm==='Werwölfe'){c.forEach(n=>G.pending.push({type:'wolf',target:n}));note('🐺 Wolfsopfer vorgemerkt: '+c.join(', '));}
+  else if(nm==='Urwolf'&&c[0]){G.pending=G.pending.filter(x=>x.target!==c[0]||x.type!=='wolf');P(c[0]).lager='Wolf';P(c[0]).status.push('infiziert');actor('Urwolf').abilities.infection=false;note('🧬 '+c[0]+' infiziert; überlebt.');}
   else if(nm==='Großer böser Wolf'&&c[0]){G.pending.push({type:'bigwolf',target:c[0]});note('🐺 Zusatzopfer vorgemerkt: '+c[0]);}
   else if(nm==='Hexe-Heilung'&&c[0]){G.pending=G.pending.filter(x=>x.target!==c[0]||!['wolf','bigwolf'].includes(x.type));G.pending.push({type:'healed',target:c[0]});actor('Hexe').abilities.heal=false;note('🧪 '+c[0]+' geheilt.');}
   else if(nm==='Hexe-Gift'&&c[0]){G.pending.push({type:'poison',target:c[0]});actor('Hexe').abilities.poison=false;note('☠️ '+c[0]+' vergiftet.');}
@@ -152,7 +166,24 @@ function resolveNight(){
   for(const h of hunters){h.status.push('Jägerschuss erledigt');let live=G.players.filter(x=>x.alive);if(live.length){let target=live[Math.floor(Math.random()*live.length)];target.alive=false;note('🏹 Jäger '+h.n+' schießt auf '+target.n);}}
   // Captain succession
   if(G.captain && !P(G.captain)?.alive){note('🎖 Hauptmann '+G.captain+' ist tot – Nachfolge erforderlich.');G.captain=null;}
-  G.day++;G.night++;G.phase='day';G.step=0;save();render();
+  G.day++;G.night++;checkWin();if(!G.gameOver){G.phase='day';G.step=0}save();render();
+}
+function finishDay(){
+  let changed=true;
+  while(changed){changed=false;
+    for(const q of G.players.filter(x=>!x.alive&&x.verliebt)){let l=P(q.verliebt);if(l?.alive){kill(l.n,'Liebeskummer');changed=true;}}
+    for(const h of G.players.filter(x=>!x.alive&&x.role==='Jäger'&&!x.status.includes('Jägerschuss erledigt'))){h.status.push('Jägerschuss erledigt');let live=G.players.filter(x=>x.alive);if(live.length){let target=live[0];kill(target.n,'Jägerschuss');note('🏹 Jäger '+h.n+' schießt auf '+target.n);changed=true;}}
+  }
+  checkWin();
+  if(!G.gameOver){G.phase='night';G.step=0;save();render();}
+}
+function checkWin(){
+  let alive=G.players.filter(x=>x.alive),wolves=alive.filter(x=>x.lager==='Wolf'),village=alive.filter(x=>x.lager==='Dorf');
+  let flute=alive.find(x=>x.role==='Flötenspieler');
+  if(flute&&alive.filter(x=>x.n!==flute.n).every(x=>x.verzaubert)){G.gameOver=true;note('🏆 Flötenspieler gewinnt.');return true;}
+  if(wolves.length===0){G.gameOver=true;note('🏆 Dorf gewinnt.');return true;}
+  if(village.length===0){G.gameOver=true;note('🏆 Wolfsrudel gewinnt.');return true;}
+  return false;
 }
 function skip(){snap();note('Übersprungen: '+cur()[0]);if(cur()[0]==='Tagesbeginn')resolveNight();else{sel.clear();G.step=Math.min(G.step+1,steps().length-1);save();render()}}
 function undo(){if(!G?.hist.length)return;G=JSON.parse(G.hist.pop());sel.clear();save();render()}
