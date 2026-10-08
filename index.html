@@ -165,7 +165,7 @@ function resolveNight(){
   G.pending=[];
   let changed=true;while(changed){changed=false;for(const q of G.players.filter(x=>!x.alive&&x.verliebt)){let l=P(q.verliebt);if(l?.alive){kill(l.n,'Liebeskummer');changed=true;}}}
   G.day++;G.night++;checkWin();
-  if(!G.gameOver){G.phase='day';G.step=0;G.reaction=null;}
+  if(!G.gameOver){G.phase='day';G.step=0;G.reaction=null;let hunter=G.players.find(x=>!x.alive&&x.role==='Jäger'&&!x.status.includes('Jägerschuss erledigt'));if(hunter){hunter.status.push('Jägerschuss erledigt');G.reaction={type:'hunter',actor:hunter.n};}}
   save();render();
 }
 function skip(){snap();note('Übersprungen: '+cur()[0]);if(cur()[0]==='Tagesbeginn')resolveNight();else{sel.clear();G.step=Math.min(G.step+1,steps().length-1);save();render()}}
