@@ -1,16 +1,20 @@
 <!doctype html>
-<html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Werwolf 3.0.2</title>
+<html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Werwolf 3.0.14</title>
 <style>
 :root{--b:#0b1020;--p:#172033;--p2:#202d45;--l:#3b4a66;--t:#f5f7fb;--m:#aab6c9;--a:#8b5cf6;--g:#16a34a;--r:#dc2626}
-*{box-sizing:border-box}body{margin:0;background:var(--b);color:var(--t);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}header{padding:12px 16px;background:#080d19;border-bottom:1px solid var(--l);position:sticky;top:0;z-index:2}h1{margin:0;font-size:19px}.sub{color:var(--m);font-size:12px}main{max-width:1100px;margin:auto;padding:12px}.box{background:var(--p);border:1px solid var(--l);border-radius:14px;padding:12px;margin-bottom:12px}button,select{font:inherit;background:#0e1627;color:var(--t);border:1px solid var(--l);border-radius:9px;padding:9px 11px}button{background:var(--a);border:0;font-weight:700}button.secondary{background:#344258}button:disabled{opacity:.4}.toolbar{display:flex;gap:8px;flex-wrap:wrap}.phase{display:flex;justify-content:space-between}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.card{background:var(--p2);border:2px solid transparent;border-radius:11px;padding:9px;min-height:92px}.card.sel{border-color:var(--a);background:#33265f}.card.dead{opacity:.4}.num{font-size:20px;font-weight:800}.role{font-size:12px}.tag{display:inline-block;background:#354257;padding:2px 5px;border-radius:5px;margin:3px 2px 0 0;font-size:10px}.wolf{background:#642938}.dorf{background:#17603d}.msg{background:#0e1627;padding:10px;border-radius:9px;margin-bottom:10px;font-size:13px}.actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}.tabs{display:flex;gap:6px;overflow:auto;margin-bottom:10px}.tabs button{background:#344258;white-space:nowrap}.tabs .on{background:var(--a)}table{width:100%;border-collapse:collapse;font-size:12px}td,th{padding:7px;border-bottom:1px solid var(--l);text-align:left}.log{white-space:pre-wrap;background:#080d18;padding:10px;border-radius:8px;max-height:400px;overflow:auto;font:11px monospace}
+*{box-sizing:border-box}body{margin:0;background:var(--b);color:var(--t);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}header{padding:12px 16px;background:#080d19;border-bottom:1px solid var(--l);position:sticky;top:0;z-index:2}h1{margin:0;font-size:19px}.sub{color:var(--m);font-size:12px}main{max-width:1100px;margin:auto;padding:12px}.box{background:var(--p);border:1px solid var(--l);border-radius:14px;padding:12px;margin-bottom:12px}button,select{font:inherit;background:#0e1627;color:var(--t);border:1px solid var(--l);border-radius:9px;padding:9px 11px}button{background:var(--a);border:0;font-weight:700}button.secondary{background:#344258}button:disabled{opacity:.4}.toolbar{display:flex;gap:8px;flex-wrap:wrap}.phase{display:flex;justify-content:space-between}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.card{display:flex;flex-direction:column;background:var(--p2);border:2px solid transparent;border-radius:11px;padding:12px;min-height:118px;cursor:pointer}.card.sel{border-color:var(--a);background:#33265f}.card.unavailable{opacity:.38;filter:grayscale(.75);cursor:not-allowed}.card.unavailable.pending-target,.card.unavailable.saved-target{opacity:.72}.card.dead{opacity:.28}.card.pending-target{box-shadow:inset 0 0 0 2px #f59e0b}.card.saved-target{box-shadow:inset 0 0 0 2px var(--g)}.card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}.num{font-size:26px;font-weight:800}.role{font-size:16px;font-weight:700;line-height:1.25;margin-top:6px}.card-footer{display:flex;align-items:flex-end;justify-content:space-between;gap:6px;margin-top:auto;padding-top:10px}.target-icons,.status-icons{display:flex;align-items:center;gap:4px;flex-wrap:wrap}.status-icons{justify-content:flex-end;margin-left:auto}.icon{display:inline-flex;align-items:center;justify-content:center;background:#354257;border-radius:6px;padding:4px 6px;font-size:17px;line-height:1;min-height:30px;white-space:nowrap}.target-icon{background:#7c2d12}.saved-icon{background:#166534}.lager-icon{font-size:22px;min-width:36px}.wolf{background:#642938}.dorf{background:#17603d}.solo{background:#5b3b75}.msg{background:#0e1627;padding:10px;border-radius:9px;margin-bottom:10px;font-size:13px}.actions{display:flex;gap:7px;flex-wrap:wrap;margin:0 0 10px}.nav-row{display:flex;align-items:center;gap:10px;margin-top:12px}.tabs{display:flex;gap:6px;overflow:auto;min-width:0;flex:1}.tabs button{background:#344258;white-space:nowrap}.tabs .on{background:var(--a)}.game-footer{display:flex;justify-content:flex-end;gap:6px;flex:0 0 auto}table{width:100%;border-collapse:collapse;font-size:12px}td,th{padding:7px;border-bottom:1px solid var(--l);text-align:left}.log{white-space:pre-wrap;background:#080d18;padding:10px;border-radius:8px;max-height:400px;overflow:auto;font:11px monospace}
 @media(max-width:800px){.grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:430px){main{padding:8px}}
+.num-wrap{display:flex;align-items:center;gap:8px}.active-role{width:13px;height:13px;border-radius:50%;background:#facc15;box-shadow:0 0 0 3px rgba(250,204,21,.18),0 0 9px rgba(250,204,21,.8);flex:0 0 auto}.card.unavailable,.card.dead,.card.unavailable.pending-target,.card.unavailable.saved-target{opacity:1;filter:none;background:#111827;color:#7c879a}.card.unavailable .num,.card.unavailable .role,.card.unavailable .lager-icon,.card.dead .num,.card.dead .role,.card.dead .lager-icon{opacity:.38;filter:grayscale(1)}.card.unavailable.lager-relevant .lager-icon{opacity:1;filter:none}.card .icon.info-muted,.card.unavailable .icon.info-muted,.card.dead .icon.info-muted{opacity:.22;filter:grayscale(1)}.card .icon.info-relevant,.card.unavailable .icon.info-relevant,.card.dead .icon.info-relevant{opacity:1;filter:none}.card.pending-target.target-info-muted,.card.saved-target.target-info-muted{box-shadow:none}.card .active-role{opacity:1;filter:none}.undo-button{margin-left:auto}.choice-button.choice-on{outline:3px solid #facc15;background:#5b21b6}.open{background:#475569}.transition-overlay{display:none;position:fixed;inset:0;z-index:50;background:rgba(2,6,23,.86);align-items:center;justify-content:center;padding:20px}.transition-overlay.show{display:flex}.transition-panel{width:min(680px,100%);max-height:88vh;overflow:auto;background:#111a2c;border:3px solid #8b5cf6;border-radius:20px;padding:26px;text-align:center;box-shadow:0 24px 90px rgba(0,0,0,.65)}.transition-panel.day{border-color:#facc15}.transition-panel.night{border-color:#6366f1}.transition-panel.event{border-color:#ef4444}.transition-panel.victory{border-color:#fbbf24;background:#241b08}.transition-symbol{font-size:58px;line-height:1}.transition-panel h2{font-size:32px;margin:12px 0 8px}.transition-panel p{color:var(--m);margin:0 0 18px}.death-list{display:grid;gap:8px;text-align:left;margin:18px 0}.death-entry{background:#1e293b;border-radius:10px;padding:11px 13px;font-size:17px;font-weight:700}.death-entry.pending{border:2px dashed #f59e0b}.transition-panel button{font-size:18px;padding:12px 20px}.privacy-mode .phase>div:first-child{visibility:hidden}.privacy-mode .actions{display:none}.privacy-mode .card{background:var(--p2)!important;border-color:transparent!important;box-shadow:none!important;color:var(--t)!important;opacity:1!important;filter:none!important;pointer-events:none}.privacy-mode .card .role,.privacy-mode .card .lager-icon,.privacy-mode .card .card-footer,.privacy-mode .card .active-role{visibility:hidden}.privacy-mode .tabs button:not(#tm){display:none}
 </style></head><body>
-<header><h1>🐺 Werwolf 3.0.2</h1><div class="sub">Interaktive Spielleitung · Testversion</div></header>
+<header><h1>🐺 Werwolf 3.0.14</h1><div class="sub">Interaktive Spielleitung · Testversion</div></header>
 <main>
-<div class="box toolbar"><label>Spieler <select id="cnt"><option>10</option><option>11</option><option>12</option><option>13</option><option>14</option><option>15</option><option>16</option><option>17</option><option>18</option><option>19</option><option>20</option><option>21</option><option>22</option><option>23</option><option>24</option><option>25</option><option>26</option><option>27</option><option>28</option></select></label><label>Tempo <select id="spd"><option value="45">45 Minuten</option><option value="90">90 Minuten</option><option value="classic">Klassisch</option></select></label><button onclick="newGame()">Neue Partie</button><button class="secondary" onclick="loadGame()">Laden</button><button class="secondary" onclick="exportGame()">Export</button></div>
-<div class="box phase"><div><b id="phase">Keine Partie</b><div class="sub" id="hint">Neue Partie starten.</div></div><b id="alive">–</b></div>
-<div class="box"><div class="tabs"><button id="tm" class="on" onclick="view('m')">Moderation</button><button id="tp" onclick="view('p')">Spielübersicht</button><button id="tl" onclick="view('l')">Protokoll</button></div><div id="m"></div><div id="p" style="display:none"></div><div id="l" style="display:none"></div></div>
+<div id="startArea" class="box toolbar"><label>Spieler <select id="cnt"><option>10</option><option>11</option><option>12</option><option>13</option><option>14</option><option>15</option><option>16</option><option>17</option><option>18</option><option>19</option><option>20</option><option>21</option><option>22</option><option>23</option><option>24</option><option>25</option><option>26</option><option>27</option><option selected>28</option></select></label><label>Tempo <select id="spd"><option value="45">45 Minuten</option><option value="90">90 Minuten</option><option value="classic">Klassisch</option></select></label><button onclick="newGame()">Neue Partie</button></div>
+<div id="gameArea" style="display:none">
+<div class="box phase"><div><b id="phase"></b><div class="sub" id="hint"></div></div><b id="alive"></b></div>
+<div class="box"><div id="m"></div><div id="p" style="display:none"></div><div id="l" style="display:none"></div><div class="nav-row"><div class="tabs"><button id="tm" class="on" onclick="view('m')">Moderation</button><button id="tp" onclick="view('p')">Spielübersicht</button><button id="tl" onclick="view('l')">Protokoll</button></div><div class="game-footer"><button id="privacyBtn" class="secondary" onclick="togglePrivacy()">🙈 Infos verbergen</button><button class="secondary" onclick="returnToStart()">↩ Zur Startseite</button></div></div></div>
+</div>
 </main>
+<div id="transitionOverlay" class="transition-overlay" role="dialog" aria-modal="true"><div id="transitionPanel" class="transition-panel"><div id="transitionSymbol" class="transition-symbol"></div><h2 id="transitionTitle"></h2><p id="transitionText"></p><div id="transitionDeaths" class="death-list"></div><button id="transitionButton" onclick="confirmTransition()"></button></div></div>
 <script>
 let G=null,sel=new Set();
 const W=['Werwolf','Wolfshund','Urwolf','Großer böser Wolf','Weißer Wolf'];
@@ -52,8 +56,8 @@ function roles(n){
   for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}
   return a;
 }
-const S1=[['Amor','Zwei Verliebte bestimmen'],['Wildes Kind','Vorbild bestimmen'],['Wolfshund','Lager endgültig wählen'],['Seherin','Eine lebende Person prüfen'],['Fuchs','Mitte einer Dreiergruppe prüfen'],['Werwölfe','Reguläres Wolfsopfer wählen'],['Urwolf','Optional: das bereits gewählte Wolfsopfer infizieren'],['Großer böser Wolf','Optional: ein zusätzliches Dorfopfer'],['Hexe-Heilung','Optional: genau ein heilbares Wolfsopfer retten'],['Hexe-Gift','Optional: genau eine zulässige Person vergiften'],['Weißer Wolf','Nur gerade Nächte: anderen Wolf als Sonderopfer wählen'],['Flötenspieler','Bis zu zwei neue Personen verzaubern'],['Tagesbeginn','Nacht abwickeln']];
-const SN=[['Seherin','Ergebnis direkt anzeigen – keine erneute Zielauswahl'],['Fuchs','Mitte einer Dreiergruppe prüfen'],['Werwölfe','Reguläre Wolfsopfer wählen'],['Urwolf','Optional: das bereits gewählte Wolfsopfer infizieren'],['Großer böser Wolf','Optional: ein zusätzliches Dorfopfer'],['Hexe-Heilung','Optional: genau ein heilbares Wolfsopfer retten'],['Hexe-Gift','Optional: genau eine zulässige Person vergiften'],['Weißer Wolf','Nur gerade Nächte: anderen Wolf als Sonderopfer wählen'],['Flötenspieler','Bis zu zwei neue Personen verzaubern'],['Tagesbeginn','Nacht abwickeln']];
+const S1=[['Amor','Zwei Verliebte bestimmen'],['Wildes Kind','Vorbild bestimmen'],['Zwei Schwestern','Die Schwestern öffnen die Augen und erkennen sich'],['Wolfshund','Lager endgültig wählen'],['Seherin','Seherin führt ihre Aktion aus'],['Fuchs','Mitte einer Dreiergruppe prüfen'],['Werwölfe','Reguläres Wolfsopfer wählen'],['Urwolf','Optional: das bereits gewählte Wolfsopfer infizieren'],['Großer böser Wolf','Optional: ein zusätzliches Dorfopfer'],['Hexe-Heilung','Optional: genau ein heilbares Wolfsopfer retten'],['Hexe-Gift','Optional: genau eine zulässige Person vergiften'],['Weißer Wolf','Nur gerade Nächte: anderen Wolf als Sonderopfer wählen'],['Flötenspieler','Bis zu zwei neue Personen verzaubern'],['Tagesbeginn','Nacht abwickeln']];
+const SN=[['Seherin','Seherin führt ihre Aktion aus'],['Fuchs','Mitte einer Dreiergruppe prüfen'],['Werwölfe','Reguläre Wolfsopfer wählen'],['Urwolf','Optional: das bereits gewählte Wolfsopfer infizieren'],['Großer böser Wolf','Optional: ein zusätzliches Dorfopfer'],['Hexe-Heilung','Optional: genau ein heilbares Wolfsopfer retten'],['Hexe-Gift','Optional: genau eine zulässige Person vergiften'],['Weißer Wolf','Nur gerade Nächte: anderen Wolf als Sonderopfer wählen'],['Flötenspieler','Bis zu zwei neue Personen verzaubern'],['Tagesbeginn','Nacht abwickeln']];
 function validateRoles(r,n){
   const sisters=r.filter(x=>x==='Zwei Schwestern').length;
   if(sisters!==0&&sisters!==2) throw new Error('Zwei Schwestern müssen immer gemeinsam vergeben werden.');
@@ -63,10 +67,10 @@ function validateRoles(r,n){
 }
 function newGame(){
   let n=+cnt.value,r=roles(n); validateRoles(r,n);
-  G={version:'werwolf-3.0.2',n,speed:spd.value,night:1,day:0,step:0,phase:'night',
-     pending:[],hist:[],log:[],captain:null,gameOver:false,substep:null,
-     players:r.map((role,i)=>({n:i+1,role,lager:isW(role)?'Wolf':role==='Flötenspieler'?'Einzelgänger':(role==='Weißer Wolf'?'Einzelgänger':'Dorf'),
-       alive:true,verliebt:null,vorbild:null,verzaubert:false,status:[],
+  G={version:'werwolf-3.0.14',n,speed:spd.value,night:1,day:0,step:0,phase:'night',
+     pending:[],hist:[],log:[],captain:null,gameOver:false,victoryText:null,substep:null,ack:null,wolfhoundChoice:null,daybreakPendingWin:false,nightStartPendingWin:false,knightTarget:null,transition:{kind:'nightStart',title:'Das Dorf schläft ein',text:'Die erste Nacht beginnt.',deaths:[],button:'Erste Nacht beginnen'},infoHidden:false,daySummary:[],
+     players:r.map((role,i)=>({n:i+1,role,lager:role==='Wolfshund'?'Offen':isW(role)?'Wolf':role==='Flötenspieler'?'Einzelgänger':(role==='Weißer Wolf'?'Einzelgänger':'Dorf'),
+       alive:true,verliebt:null,vorbild:null,verzaubert:false,status:[],iconsCleared:false,
        abilities:{heal:role==='Hexe',poison:role==='Hexe',infection:role==='Urwolf',fox:role==='Fuchs',
                   bigwolf:role==='Großer böser Wolf',oldShield:role==='Alter Mann',angelFirst:true}}))};
   sel.clear();
@@ -74,7 +78,7 @@ function newGame(){
   if(sisters.length===2){
     sisters[0].status.push('Schwester von '+sisters[1].n);
     sisters[1].status.push('Schwester von '+sisters[0].n);
-    note('👭 Zwei Schwestern: '+sisters[0].n+' und '+sisters[1].n+' erkennen sich.');
+    note('👭 Zwei Schwestern: '+sisters[0].n+' und '+sisters[1].n+'.');
   }
   note('Neue Partie: '+n+' Spieler · '+G.speed);
   save();render();
@@ -90,8 +94,7 @@ function steps(){
   let base=G.night===1?S1:SN;
   return base.filter(([r])=>{
     if(r==='Tagesbeginn') return true;
-    if(r==='Seherin' && G.night>=2) return false; // ab Nacht 2 kein Ziel und keine Auswahl
-    if(r==='Werwölfe') return G.players.some(x=>x.alive&&x.lager==='Wolf'&&['Werwolf','Urwolf','Wolfshund','Großer böser Wolf'].includes(x.role));
+    if(r==='Werwölfe') return G.players.some(x=>x.alive&&x.lager==='Wolf');
     if(r==='Weißer Wolf') return G.night%2===0 && G.players.some(x=>x.alive&&x.role==='Weißer Wolf');
     if(r==='Urwolf') return G.players.some(x=>x.alive&&x.role==='Urwolf'&&x.abilities.infection&&G.pending.some(y=>y.type==='wolf'));
     if(r==='Großer böser Wolf') return G.players.some(x=>x.alive&&x.role==='Großer böser Wolf'&&x.abilities.bigwolf);
@@ -101,14 +104,31 @@ function steps(){
     return G.players.some(x=>x.alive&&x.role===r);
   });
 }
-function cur(){if(G.reaction?.type==='hunter')return ['Jägerschuss','Der Jäger bestimmt sein Schussziel.'];if(G.reaction?.type==='captain')return ['Hauptmann-Nachfolge','Der verstorbene Hauptmann bestimmt seinen Nachfolger.'];return steps()[G.step]||['Tagesbeginn','Nacht abwickeln']}
+function cur(){if(G.ack)return [G.ack.name,G.ack.message];if(G.reaction?.type==='hunter')return ['Jägerschuss','Der Jäger bestimmt sein Schussziel.'];if(G.reaction?.type==='captain')return ['Hauptmann-Nachfolge','Der verstorbene Hauptmann bestimmt seinen Nachfolger.'];return steps()[G.step]||['Tagesbeginn','Nacht abwickeln']}
 function actor(name){return G.players.find(x=>x.alive&&x.role===name)}
+const DECLINE_LABELS={'Urwolf':'Nicht infizieren','Großer böser Wolf':'Kein Zusatzopfer','Hexe-Heilung':'Nicht heilen','Hexe-Gift':'Nicht vergiften','Weißer Wolf':'Keinen Werwolf töten'};
+function declineLabel(name){return DECLINE_LABELS[name]||''}
+function advanceStep(name){
+  let list=steps(),direct=list.findIndex(x=>x[0]===name);
+  if(direct>=0){G.step=Math.min(direct+1,Math.max(0,list.length-1));return}
+  let order=(G.phase==='day'?DAY:(G.night===1?S1:SN)).map(x=>x[0]),position=order.indexOf(name);
+  let next=order.slice(position+1).find(n=>list.some(x=>x[0]===n));
+  G.step=next?list.findIndex(x=>x[0]===next):Math.max(0,list.length-1);
+}
+function completeStep(name){advanceStep(name);if(cur()[0]==='Tagesbeginn'){resolveNight();return;}save();render()}
+function confirmation(name,message,button,players,source){G.ack={name,message,button,players:[...players],source};sel.clear();save();render()}
+function actionLabel(name,k){if(G.ack)return G.ack.button;if(name==='Zwei Schwestern')return 'Schwestern haben sich erkannt';if(name==='Seherin')return 'Seherin ist fertig';if(name==='Flötenspieler')return sel.size?'Verzaubern bestätigen ('+sel.size+'/'+k+')':'Niemanden verzaubern';if(name==='Tagesbeginn')return 'Nacht abwickeln';if(name==='Tagesende')return 'Tag beenden';return 'Bestätigen ('+sel.size+'/'+k+')'}
 function need(name){
+  if(G.ack||name==='Tagesbeginn'||name==='Tagesende'||name==='Wolfshund'||name==='Zwei Schwestern'||name==='Seherin') return 0;
   if(name==='Amor') return 2;
-  if(name==='Werwölfe') return G.speed==='classic'?1:(G.speed==='90'?(G.night<=3?1:G.night<=5?2:G.night<=7?3:4):(G.night===1?1:G.night<=3?2:G.night<=6?3:4));
+  if(name==='Werwölfe'){
+    let quota=G.speed==='classic'?1:(G.speed==='90'?(G.night<=3?1:G.night<=5?2:G.night<=7?3:4):(G.night===1?1:G.night<=3?2:G.night<=6?3:4));
+    return Math.min(quota,G.players.filter(x=>x.alive&&x.lager!=='Wolf').length);
+  }
   if(name==='Jägerschuss'||name==='Hauptmann-Nachfolge') return 1;
   if(name==='Tageshinrichtung'){
-    return G.speed==='classic'?1:(G.speed==='90'?(G.day<=3?1:G.day<=5?2:G.day<=7?3:4):(G.day===1?1:G.day<=3?2:G.day<=6?3:4));
+    let quota=G.speed==='classic'?1:(G.speed==='90'?(G.day<=3?1:G.day<=5?2:G.day<=7?3:4):(G.day===1?1:G.day<=3?2:G.day<=6?3:4));
+    return Math.min(quota,G.players.filter(x=>x.alive).length);
   }
   if(name==='Flötenspieler') return Math.min(2,G.players.filter(x=>x.alive&&x.role!=='Flötenspieler'&&!x.verzaubert).length);
   return 1;
@@ -116,15 +136,20 @@ function need(name){
 function elig(name){
   let a=G.players.filter(x=>x.alive);
   const me=actor(name);
+  if(G.ack||name==='Tagesbeginn'||name==='Tagesende'||name==='Wolfshund'||name==='Zwei Schwestern'||name==='Seherin') return [];
   if(name==='Amor') return a.filter(x=>x.n!==me?.n);
   if(name==='Wildes Kind') return a.filter(x=>x.n!==me?.n);
-  if(name==='Seherin') return a.filter(x=>x.n!==me?.n);
   if(name==='Fuchs') return a;
-  if(name==='Werwölfe') return a.filter(x=>x.lager==='Dorf');
+  if(name==='Werwölfe') return a.filter(x=>x.lager!=='Wolf');
   if(name==='Urwolf') return G.pending.filter(x=>x.type==='wolf'&&P(x.target)?.alive).map(x=>P(x.target));
-  if(name==='Großer böser Wolf') return a.filter(x=>x.lager==='Dorf'&&!G.pending.some(y=>y.target===x.n));
-  if(name==='Hexe-Heilung') return G.pending.filter(x=>(x.type==='wolf'||x.type==='bigwolf')&&P(x.target)?.alive).map(x=>P(x.target)).filter(x=>x&&x.role!=='Weißer Wolf');
-  if(name==='Hexe-Gift') return a.filter(x=>x.role!=='Hexe'&&!G.pending.some(y=>y.target===x.n&&y.type==='healed')&&!G.pending.some(y=>y.target===x.n&&y.type==='poison'));
+  if(name==='Großer böser Wolf') return a.filter(x=>x.lager!=='Wolf'&&!G.pending.some(y=>y.target===x.n));
+  if(name==='Hexe-Heilung') return G.pending.filter(x=>(x.type==='wolf'||x.type==='bigwolf')&&P(x.target)?.alive).map(x=>P(x.target)).filter(x=>x&&x.role!=='Weißer Wolf'&&!(x.role==='Alter Mann'&&x.abilities.oldShield));
+  if(name==='Hexe-Gift') return a.filter(x=>x.role!=='Hexe'&&!G.pending.some(y=>{
+    if(y.target!==x.n)return false;
+    if(y.type==='healed'||y.type==='poison')return true;
+    if(y.type==='wolf'||y.type==='bigwolf')return !(x.role==='Alter Mann'&&x.abilities.oldShield);
+    return false;
+  }));
   if(name==='Weißer Wolf') return a.filter(x=>x.lager==='Wolf'&&x.role!=='Weißer Wolf');
   if(name==='Flötenspieler') return a.filter(x=>x.n!==me?.n&&!x.verzaubert);
   if(name==='Jägerschuss') return a.filter(x=>x.n!==G.reaction?.actor);
@@ -139,66 +164,197 @@ function neighbors(mid){
   for(let d=1;d<=G.n;d++){let k=(idx+d+G.n)%G.n;if(G.players[k].alive){right=G.players[k].n;break}}
   return [left,mid,right].filter((x,i,a)=>x&&a.indexOf(x)===i);
 }
+function activePlayers(name){
+  if(G.ack)return (G.ack.players||[]).map(P).filter(Boolean);
+  if(name==='Werwölfe') return G.players.filter(x=>x.alive&&x.lager==='Wolf');
+  if(name==='Hexe-Heilung'||name==='Hexe-Gift') return G.players.filter(x=>x.alive&&x.role==='Hexe');
+  if(name==='Jägerschuss') return [P(G.reaction?.actor)].filter(Boolean);
+  if(name==='Hauptmann-Nachfolge') return [P(G.captain)].filter(Boolean);
+  if(name==='Tagesbeginn'||name==='Tagesende'||name==='Tageshinrichtung'||name==='Hauptmann') return [];
+  return G.players.filter(x=>x.alive&&x.role===name);
+}
 function card(x,name){
   let ok=x.alive&&elig(name).some(y=>y.n===x.n);
-  if(name==='Seherin'&&G.night>=2) ok=false;
-  let tags=[x.alive?'lebend':'tot',x.lager];
-  if(x.verliebt)tags.push('❤️ '+x.verliebt);
-  if(x.vorbild)tags.push('Vorbild: '+x.vorbild); else if(x.role==='Wildes Kind')tags.push('Vorbild: offen');
-  if(x.verzaubert)tags.push('verzaubert');
-  if(x.status) x.status.forEach(t=>tags.push(t));
-  if(G.captain===x.n)tags.push('Hauptmann');
-  return '<div class="card '+(sel.has(x.n)?'sel ':'')+(!x.alive?'dead':'')+'" onclick="'+(ok?'pick('+x.n+')':'')+'"><div class="num">'+x.n+'</div><div class="role">'+esc(x.role)+'</div>'+tags.map(t=>'<span class="tag '+(t==='Wolf'?'wolf':t==='Dorf'?'dorf':'')+'">'+esc(t)+'</span>').join('')+'</div>';
+  let active=activePlayers(name).some(y=>y.n===x.n);
+  let ackName=G.ack?.name||'';
+  let infoClass=relevant=>relevant?'info-relevant':'info-muted';
+  let loveRelevant=ackName==='Verliebte erkennen sich'&&(G.ack?.players||[]).includes(x.n);
+  let modelRelevant=name==='Wildes Kind';
+  let enchantedRelevant=ackName==='Verzauberte erkennen sich'&&(G.ack?.players||[]).includes(x.n);
+  let captainRelevant=['Hauptmann','Hauptmann-Nachfolge','Tageshinrichtung'].includes(name);
+  let targetRelevant=name==='Hexe-Heilung'||name==='Hexe-Gift';
+  let lager=x.lager==='Wolf'?['🐺','Wolfsrudel','wolf']:x.lager==='Dorf'?['🏠','Dorf','dorf']:x.lager==='Einzelgänger'?['🎭','Einzelgänger','solo']:['❓','Lager noch offen','open'];
+  let lagerIcon=x.iconsCleared?'':'<span class="icon lager-icon '+lager[2]+'" title="'+lager[1]+'" aria-label="'+lager[1]+'">'+lager[0]+'</span>';
+  let statusIcons=[];
+  if(!x.iconsCleared){
+    if(x.verliebt)statusIcons.push('<span class="icon '+infoClass(loveRelevant)+'" title="Verliebt mit Spieler '+x.verliebt+'" aria-label="Verliebt mit Spieler '+x.verliebt+'">❤️ '+x.verliebt+'</span>');
+    if(x.role==='Wildes Kind'&&!x.vorbild)statusIcons.push('<span class="icon '+infoClass(modelRelevant)+'" title="Vorbild noch offen" aria-label="Vorbild noch offen">⭐ ?</span>');
+    if(x.vorbild)statusIcons.push('<span class="icon '+infoClass(modelRelevant)+'" title="Vorbild ist Spieler '+x.vorbild+'" aria-label="Vorbild ist Spieler '+x.vorbild+'">⭐ '+x.vorbild+'</span>');
+    G.players.filter(y=>y.vorbild===x.n).forEach(y=>statusIcons.push('<span class="icon '+infoClass(modelRelevant)+'" title="Vorbild für Spieler '+y.n+'" aria-label="Vorbild für Spieler '+y.n+'">⭐ '+y.n+'</span>'));
+    if(x.verzaubert)statusIcons.push('<span class="icon '+infoClass(enchantedRelevant)+'" title="Verzaubert" aria-label="Verzaubert">✨</span>');
+    if(G.captain===x.n)statusIcons.push('<span class="icon '+infoClass(captainRelevant)+'" title="Hauptmann" aria-label="Hauptmann">🎖️</span>');
+  }
+  let targetIcons=[],targetClass='';
+  G.pending.filter(y=>y.target===x.n).forEach(y=>{
+    if(y.type==='wolf'){targetIcons.push('<span class="icon target-icon '+infoClass(targetRelevant)+'" title="Wolfsopfer" aria-label="Wolfsopfer">🎯🐺</span>');targetClass='pending-target';}
+    if(y.type==='bigwolf'){targetIcons.push('<span class="icon target-icon '+infoClass(targetRelevant)+'" title="Zusatzopfer des Großen bösen Wolfs" aria-label="Zusatzopfer des Großen bösen Wolfs">🎯➕</span>');targetClass='pending-target';}
+    if(y.type==='poison'){targetIcons.push('<span class="icon target-icon '+infoClass(targetRelevant)+'" title="Von der Hexe vergiftet" aria-label="Von der Hexe vergiftet">☠️</span>');targetClass='pending-target';}
+    if(y.type==='whitewolf'){targetIcons.push('<span class="icon target-icon '+infoClass(targetRelevant)+'" title="Opfer des Weißen Wolfs" aria-label="Opfer des Weißen Wolfs">🎯⚪</span>');targetClass='pending-target';}
+    if(y.type==='healed'){targetIcons.push('<span class="icon saved-icon '+infoClass(targetRelevant)+'" title="Von der Hexe geheilt" aria-label="Von der Hexe geheilt">🧪</span>');targetClass='saved-target';}
+  });
+  let footer=targetIcons.length||statusIcons.length?'<div class="card-footer">'+(targetIcons.length?'<div class="target-icons">'+targetIcons.join('')+'</div>':'<div></div>')+(statusIcons.length?'<div class="status-icons">'+statusIcons.join('')+'</div>':'')+'</div>':'';
+  let cardClasses=(sel.has(x.n)?'sel ':'')+(!ok?'unavailable ':'')+(!x.alive?'dead ':'')+targetClass+' '+(!targetRelevant&&targetClass?'target-info-muted ':'')+(['Seherin','Fuchs'].includes(name)?'lager-relevant ':'');
+  return '<div class="card '+cardClasses+'" onclick="'+(ok?'pick('+x.n+')':'')+'"><div class="card-head"><div class="num-wrap"><div class="num">'+x.n+'</div>'+(active?'<span class="active-role" title="Aktive Rolle" aria-label="Aktive Rolle"></span>':'')+'</div>'+lagerIcon+'</div><div class="role">'+esc(x.role)+'</div>'+footer+'</div>';
 }
-function render(){if(!G){m.innerHTML='<div class="msg">Neue Partie starten.</div>';return}let[n,h]=cur();phase.textContent=(G.phase==='night'?'Nacht '+G.night:'Tag '+G.day)+' · '+n;hint.textContent=h;alive.textContent=G.players.filter(x=>x.alive).length;let extra=n==='Tagesbeginn'?'<div class="msg">☀️ Nachtopfer und Todesketten werden jetzt abgewickelt.</div>':'';let k=need(n),ok=n==='Tagesbeginn'||n==='Tagesende'||sel.size===k;if(n==='Hauptmann'||n==='Tageshinrichtung')ok=sel.size===k;m.innerHTML=(G.gameOver?'<div class="msg">🏆 Partie beendet. '+esc(G.log[G.log.length-1]||'')+'</div>':n==='Wolfshund'?'<div class="msg">🐺 Wolfshund: endgültige Lagerwahl</div><div class="actions"><button onclick="wolfhoundChoice(\'Dorf\')">🏠 Dorf</button><button onclick="wolfhoundChoice(\'Wolf\')">🐺 Wolfsrudel</button></div>':'<div class="grid">'+G.players.map(x=>card(x,n)).join('')+'</div>'+extra+'<div class="actions"><button onclick="confirmAction()" '+(ok?'':'disabled')+'>'+(n==='Tagesbeginn'?'Nacht abwickeln':'Bestätigen ('+sel.size+'/'+k+')')+'</button><button class="secondary" onclick="skip()">Überspringen</button><button class="secondary" onclick="undo()">↶ Rückgängig</button></div>');p.innerHTML=table();l.innerHTML='<div class="log">'+esc(G.log.join('\n'))+'</div>'}
-function wolfhoundChoice(lager){
-  snap();let q=actor('Wolfshund');if(q){q.lager=lager;q.status.push('Wolfshund: '+lager);note('🐺 Wolfshund wählt '+lager+'.');}
-  G.step=Math.min(G.step+1,steps().length-1);save();render();
+function render(){
+  if(!G){startArea.style.display='flex';gameArea.style.display='none';transitionOverlay.className='transition-overlay';return}
+  startArea.style.display='none';gameArea.style.display='block';
+  gameArea.classList.toggle('privacy-mode',!!G.infoHidden);privacyBtn.textContent=G.infoHidden?'👁 Infos anzeigen':'🙈 Infos verbergen';
+  let[n,h]=cur();
+  if(n==='Tagesbeginn'&&!G.transition&&!G.gameOver){resolveNight();return;}
+  phase.textContent=(G.phase==='night'?'Nacht '+G.night:'Tag '+G.day)+' · '+n;
+  hint.textContent=h;alive.textContent=G.players.filter(x=>x.alive).length;
+  let extra='';
+  let k=need(n),ok=n==='Tagesende'||n==='Flötenspieler'||sel.size===k;
+  if(n==='Hauptmann'||n==='Tageshinrichtung')ok=sel.size===k;
+  let decline=declineLabel(n);
+  let grid='<div class="grid">'+G.players.map(x=>card(x,n)).join('')+'</div>';
+  if(G.gameOver)m.innerHTML='<div class="msg">🏆 Partie beendet. '+esc(G.log[G.log.length-1]||'')+'</div>';
+  else if(n==='Wolfshund')m.innerHTML='<div class="msg">🐺 Wolfshund: Lager auswählen und anschließend bestätigen</div><div class="actions"><button class="choice-button '+(G.wolfhoundChoice==='Dorf'?'choice-on':'')+'" onclick="selectWolfhound(\'Dorf\')">🏠 Dorf</button><button class="choice-button '+(G.wolfhoundChoice==='Wolf'?'choice-on':'')+'" onclick="selectWolfhound(\'Wolf\')">🐺 Wolfsrudel</button><button onclick="confirmWolfhound()" '+(G.wolfhoundChoice?'':'disabled')+'>Lagerwahl bestätigen</button><button class="secondary undo-button" onclick="undo()">↶ Rückgängig</button></div>'+grid;
+  else m.innerHTML=extra+'<div class="actions"><button onclick="confirmAction()" '+(ok?'':'disabled')+'>'+actionLabel(n,k)+'</button>'+(n==='Hauptmann'&&!G.captain?'<button class="secondary" onclick="randomCaptain()">🎲 Zufällig auswählen</button>':'')+(decline?'<button class="secondary" onclick="skip()">'+decline+'</button>':'')+'<button class="secondary undo-button" onclick="undo()">↶ Rückgängig</button></div>'+grid;
+  p.innerHTML=table();l.innerHTML='<div class="log">'+esc(G.log.join('\n'))+'</div>';renderOverlay();
 }
-function pick(n){let[nm]=cur(),k=need(nm);if(sel.has(n))sel.delete(n);else if(sel.size<k)sel.add(n);render()}
-function snap(){G.hist.push(JSON.stringify(G));if(G.hist.length>30)G.hist.shift()}
+function renderOverlay(){
+  if(!G?.transition){transitionOverlay.className='transition-overlay';return;}
+  let t=G.transition;
+  transitionOverlay.className='transition-overlay show';
+  transitionPanel.className='transition-panel '+(t.kind==='daybreak'?'day':t.kind==='nightStart'?'night':t.kind==='victory'?'victory':'event');
+  transitionSymbol.textContent=t.symbol||(t.kind==='daybreak'?'☀️':t.kind==='nightStart'?'🌙':t.kind==='victory'?'🏆':'⚠️');
+  transitionTitle.textContent=t.title;
+  transitionText.textContent=t.text||'';
+  transitionDeaths.innerHTML=(t.deaths||[]).map(x=>'<div class="death-entry '+(x.pending?'pending':'')+'">'+esc(x.icon||'☠️')+' '+esc(x.label||'Spieler')+' '+esc(x.n)+(x.role?' · '+esc(x.role):'')+'<br><span class="sub">'+esc(x.cause)+'</span></div>').join('');
+  transitionButton.textContent=t.button||'Weiter';
+}
+function confirmTransition(){
+  if(!G?.transition)return;
+  let kind=G.transition.kind,next=G.transition.next;G.transition=null;sel.clear();
+  if(kind==='daybreak'){
+    if(G.reaction){save();render();return;}
+    completeDaybreak();return;
+  }
+  if(kind==='nightStart'){
+    G.phase='night';G.step=0;G.reaction=null;startNextNight();return;
+  }
+  if(kind==='event'&&next==='finishReaction'){finishReaction();return;}
+  if(kind==='event'&&next==='nightStart'){showNightStart();return;}
+  if(kind==='event'&&next==='completeNightStart'){completeNightStart();return;}
+  if(kind==='event'&&next==='victory'){showVictory();return;}
+  if(kind==='victory'){save();render();return;}
+  save();render();
+}
+function togglePrivacy(){if(!G)return;G.infoHidden=!G.infoHidden;if(G.infoHidden)view('m');else{save();render()}save()}
+function randomCaptain(){let choices=elig('Hauptmann');if(!choices.length)return;sel.clear();sel.add(choices[Math.floor(Math.random()*choices.length)].n);render()}
+function returnToStart(){
+  if(!confirm('Zur Startseite zurückkehren? Die aktuelle Partie wird verlassen.')) return;
+  G=null;sel.clear();render();
+}
+function selectWolfhound(lager){G.wolfhoundChoice=lager;render()}
+function confirmWolfhound(){
+  if(!G.wolfhoundChoice)return;
+  snap();let lager=G.wolfhoundChoice,q=actor('Wolfshund');if(q){q.lager=lager;q.status.push('Wolfshund: '+lager);note('🐺 Wolfshund wählt '+lager+'.');}
+  G.wolfhoundChoice=null;
+  completeStep('Wolfshund');
+}
+function pick(n){
+  let[nm]=cur(),k=need(nm);
+  if(sel.has(n))sel.delete(n);
+  else if(k>0){if(sel.size>=k)sel.delete(sel.values().next().value);sel.add(n);}
+  render();
+}
+function snap(){G.hist.push(JSON.stringify(G,(key,value)=>key==='hist'?[]:value));if(G.hist.length>30)G.hist.shift()}
 function confirmAction(){
   let[nm]=cur(),c=[...sel];snap();
-  if(nm==='Jägerschuss'){let h=G.reaction.actor;if(c[0]&&P(c[0])?.alive){kill(c[0],'Jägerschuss');note('🏹 Jäger '+h+' schießt auf '+c[0]);}G.reaction=null;finishReaction();return;}
+  if(G.ack){let a=G.ack;note('Bestätigt: '+a.name);G.ack=null;sel.clear();completeStep(a.source);return;}
+  if(nm==='Jägerschuss'){
+    let h=G.reaction.actor,target=c[0],loveDeaths=[],shotDeath=null;
+    if(target&&P(target)?.alive){kill(target,'Jägerschuss');note('🏹 Jäger '+h+' schießt auf '+target);shotDeath=deathAnnouncement(target,'Jägerschuss');resolveLoveDeaths(loveDeaths);if(G.phase==='day'&&Array.isArray(G.daySummary))G.daySummary.push(shotDeath,...loveDeaths);}
+    G.reaction=null;
+    if(loveDeaths.length){
+      G.transition={kind:'event',symbol:'🏹❤️',title:'Liebeskummer nach dem Jägerschuss',text:'Der Jäger hat eine verliebte Person getroffen. Der Partner stirbt unmittelbar danach an Liebeskummer.',deaths:[shotDeath,...loveDeaths],button:'Todesfolge bestätigen',next:'finishReaction'};
+      sel.clear();save();render();return;
+    }
+    finishReaction();return;
+  }
   else if(nm==='Hauptmann-Nachfolge'){G.captain=c[0];note('🎖 Hauptmann-Nachfolge: '+c[0]);G.reaction=null;finishReaction();return;}
-  else if(nm==='Hauptmann'){G.captain=c[0];note('🎖 Hauptmann: '+c[0]);}
-  else if(nm==='Tageshinrichtung'){note('⚖️ Hinrichtungen: '+c.join(', '));c.forEach(n=>{if(P(n)?.alive)kill(n,'Tageshinrichtung')});finishDay();}
-  else if(nm==='Tagesende'){finishDay();}
-  else if(nm==='Amor'){P(c[0]).verliebt=c[1];P(c[1]).verliebt=c[0];note('❤️ Verliebte: '+c[0]+' und '+c[1]);}
+  else if(nm==='Hauptmann'){
+    G.captain=c[0];note('🎖 Hauptmann: '+c[0]);
+    if(G.daybreakPendingWin){cleanupDeadIcons();G.daybreakPendingWin=false;if(checkWin()){sel.clear();showVictory();return;}}
+  }
+  else if(nm==='Tageshinrichtung'){
+    note('⚖️ Hinrichtungen: '+c.join(', '));G.daySummary=[];
+    c.forEach(n=>{if(P(n)?.alive){kill(n,'Tageshinrichtung');G.daySummary.push(deathAnnouncement(n,'Tageshinrichtung'));}});
+    sel.clear();finishDay();return;
+  }
+  else if(nm==='Tagesende'){sel.clear();finishDay();return;}
+  else if(nm==='Amor'){P(c[0]).verliebt=c[1];P(c[1]).verliebt=c[0];note('❤️ Verliebte: '+c[0]+' und '+c[1]);confirmation('Verliebte erkennen sich','Nur die beiden Verliebten öffnen die Augen und erkennen sich.','Verliebte haben sich erkannt',c,nm);return;}
   else if(nm==='Wildes Kind'){let q=actor('Wildes Kind');if(q)q.vorbild=c[0];note('🌱 Vorbild: '+c[0]);}
-  else if(nm==='Seherin'){note('🔮 Seherin prüft '+c[0]+': '+P(c[0]).lager);}
-  else if(nm==='Fuchs'){let ids=neighbors(c[0]),wolf=ids.some(n=>P(n).lager==='Wolf'),q=actor('Fuchs');note('🦊 Fuchsprüfung '+ids.join(', ')+' → '+(wolf?'Wolf vorhanden; Fähigkeit bleibt':'kein Wolf; Fähigkeit verloren'));if(q&&!wolf)q.abilities.fox=false;}
+  else if(nm==='Zwei Schwestern'){note('👭 Die Schwestern haben sich erkannt.');}
+  else if(nm==='Seherin'){note('🔮 Seherin ist fertig.');}
+  else if(nm==='Fuchs'){let ids=neighbors(c[0]),wolf=ids.some(n=>P(n).lager==='Wolf'),q=actor('Fuchs');note('🦊 Fuchsprüfung '+ids.join(', ')+' → '+(wolf?'Wolf vorhanden; Fähigkeit bleibt':'kein Wolf; Fähigkeit verloren'));if(q&&!wolf)q.abilities.fox=false;confirmation('Fuchs – Ergebnis','Gruppe '+ids.join(', ')+': '+(wolf?'Mindestens ein Wolf ist dabei.':'Kein Wolf ist dabei.'),'Fuchs hat das Ergebnis erkannt',[q.n],nm);return;}
   else if(nm==='Werwölfe'){c.forEach(n=>G.pending.push({type:'wolf',target:n}));note('🐺 Wolfsopfer vorgemerkt: '+c.join(', '));}
-  else if(nm==='Urwolf'&&c[0]){G.pending=G.pending.filter(x=>x.target!==c[0]||x.type!=='wolf');P(c[0]).lager='Wolf';P(c[0]).status.push('infiziert');actor('Urwolf').abilities.infection=false;note('🧬 '+c[0]+' infiziert; überlebt.');}
+  else if(nm==='Urwolf'&&c[0]){let target=P(c[0]);G.pending=G.pending.filter(x=>x.target!==c[0]||x.type!=='wolf');target.lager='Wolf';target.status.push('infiziert');if(target.role==='Alter Mann'&&target.abilities.oldShield){target.abilities.oldShield=false;target.status.push('Extraleben durch Infektion verloren');}actor('Urwolf').abilities.infection=false;note('🧬 '+c[0]+' infiziert; überlebt.');}
   else if(nm==='Großer böser Wolf'&&c[0]){G.pending.push({type:'bigwolf',target:c[0]});note('🐺 Zusatzopfer vorgemerkt: '+c[0]);}
   else if(nm==='Hexe-Heilung'&&c[0]){G.pending=G.pending.filter(x=>x.target!==c[0]||!['wolf','bigwolf'].includes(x.type));G.pending.push({type:'healed',target:c[0]});actor('Hexe').abilities.heal=false;note('🧪 '+c[0]+' geheilt.');}
   else if(nm==='Hexe-Gift'&&c[0]){G.pending.push({type:'poison',target:c[0]});actor('Hexe').abilities.poison=false;note('☠️ '+c[0]+' vergiftet.');}
   else if(nm==='Weißer Wolf'&&c[0]){G.pending.push({type:'whitewolf',target:c[0]});note('⚪ Weißer-Wolf-Angriff vorgemerkt: '+c[0]);}
-  else if(nm==='Flötenspieler'){c.forEach(n=>P(n).verzaubert=true);note('♫ Verzaubert: '+c.join(', '));}
-  else if(nm==='Tagesbeginn'){resolveNight();sel.clear();return;}
-  sel.clear();G.step=Math.min(G.step+1,steps().length-1);save();render();
+  else if(nm==='Flötenspieler'){
+    c.forEach(n=>P(n).verzaubert=true);let enchanted=G.players.filter(x=>x.alive&&x.verzaubert).map(x=>x.n);
+    note(c.length?'♫ Neu verzaubert: '+c.join(', '):'♫ Niemand neu verzaubert.');
+    if(enchanted.length){confirmation('Verzauberte erkennen sich','Alle verzauberten Spieler '+enchanted.join(', ')+' öffnen die Augen und erkennen sich.','Verzauberte haben sich erkannt',enchanted,nm);return;}
+  }
+  sel.clear();completeStep(nm);
 }
 function finishReaction(){
+  resolveLoveDeaths(G.phase==='day'&&Array.isArray(G.daySummary)?G.daySummary:null);
   let hunter=G.players.find(x=>!x.alive&&x.role==='Jäger'&&!x.status.includes('Jägerschuss erledigt'));
   if(hunter){hunter.status.push('Jägerschuss erledigt');G.reaction={type:'hunter',actor:hunter.n};sel.clear();save();render();return;}
+  if(G.phase==='day'&&G.daybreakPendingWin){completeDaybreak();return;}
+  if(G.phase==='night'&&G.nightStartPendingWin){G.reaction=null;completeNightStart();return;}
   if(G.captain && !P(G.captain)?.alive){G.reaction={type:'captain'};sel.clear();save();render();return;}
   if(G.phase==='day'){finishDay();}else{sel.clear();G.step=Math.min(G.step+1,steps().length-1);save();render();}
 }
+function deathAnnouncement(n,cause){
+  let q=P(n),icons={'Wolfsangriff':'🐺','Zusatzangriff des Großen bösen Wolfs':'🐺','Hexengift':'☠️','Weißer Wolf':'⚪🐺','Tageshinrichtung':'⚖️','Jägerschuss':'🏹','Liebeskummer':'❤️','Ritter der rostigen Klinge':'⚔️'};
+  return {n,role:q?.role||'',cause,icon:icons[cause]||'☠️'};
+}
+function resolveLoveDeaths(announcements){
+  let changed=true;while(changed){changed=false;for(const q of G.players.filter(x=>!x.alive&&x.verliebt)){let l=P(q.verliebt);if(l?.alive){kill(l.n,'Liebeskummer');if(announcements)announcements.push(deathAnnouncement(l.n,'Liebeskummer'));changed=true;}}}
+}
+function cleanupDeadIcons(){G.players.filter(x=>!x.alive).forEach(x=>x.iconsCleared=true)}
+function showVictory(){G.transition={kind:'victory',title:'Die Partie ist entschieden',text:G.victoryText||'Die Partie ist beendet.',deaths:[],button:'Siegerverkündung bestätigen'};save();render()}
+function showNightStart(){G.transition={kind:'nightStart',title:'Das Dorf schläft ein',text:'Nacht '+G.night+' beginnt.',deaths:[],button:'Nacht beginnen'};save();render()}
+function completeDaybreak(){
+  G.reaction=null;G.phase='day';G.step=0;sel.clear();cleanupDeadIcons();G.daybreakPendingWin=false;
+  if(checkWin()){showVictory();return;}
+  save();render();
+}
 function resolveNight(){
-  let deaths=[];
-  for(const x of G.pending){
-    if(['wolf','bigwolf','poison','whitewolf'].includes(x.type) && !G.pending.some(y=>y.type==='healed'&&y.target===x.target && x.type!=='whitewolf')) deaths.push({n:x.target,type:x.type});
+  const priority={wolf:0,bigwolf:0,poison:1,whitewolf:2};
+  let deaths=G.pending.filter(x=>Object.hasOwn(priority,x.type)&&!G.pending.some(y=>y.type==='healed'&&y.target===x.target&&x.type!=='whitewolf')).map((x,i)=>({...x,i})).sort((a,b)=>priority[a.type]-priority[b.type]||a.i-b.i);
+  const causes={wolf:'Wolfsangriff',bigwolf:'Zusatzangriff des Großen bösen Wolfs',poison:'Hexengift',whitewolf:'Weißer Wolf'};
+  let seen=new Set(),announcements=[];
+  for(const d of deaths){
+    let q=P(d.target);if(!q||!q.alive||seen.has(d.target))continue;
+    if((d.type==='wolf'||d.type==='bigwolf')&&q.role==='Alter Mann'&&q.abilities.oldShield){q.abilities.oldShield=false;q.status.push('erster Wolfsangriff überlebt');note('🛡 Alter '+q.n+' überlebt den ersten Wolfsangriff.');continue;}
+    seen.add(d.target);kill(d.target,causes[d.type]);announcements.push(deathAnnouncement(d.target,causes[d.type]));resolveLoveDeaths(announcements);
   }
-  deaths=deaths.filter(d=>{
-    let q=P(d.n);if(!q||!q.alive)return false;
-    if((d.type==='wolf'||d.type==='bigwolf')&&q.role==='Alter Mann'&&q.abilities.oldShield){q.abilities.oldShield=false;q.status.push('erster Wolfsangriff überlebt');note('🛡 Alter '+q.n+' überlebt den ersten Wolfsangriff.');return false;}
-    return true;
-  });
-  let seen=new Set();for(const d of deaths){if(!seen.has(d.n)){seen.add(d.n);kill(d.n,'Nacht');}}
+  let knight=typeof G.knightTarget==='number'?{target:G.knightTarget,dueNight:G.night+1}:G.knightTarget;
+  if(knight&&P(knight.target)?.alive)announcements.push({n:knight.target,role:P(knight.target).role,cause:'Durch den Ritter vorgemerkt – Tod zu Beginn von Nacht '+knight.dueNight,icon:'⚔️',label:'Vorgemerkt: Spieler',pending:true});
   G.pending=[];
-  let changed=true;while(changed){changed=false;for(const q of G.players.filter(x=>!x.alive&&x.verliebt)){let l=P(q.verliebt);if(l?.alive){kill(l.n,'Liebeskummer');changed=true;}}}
-  G.day++;G.night++;checkWin();
-  if(!G.gameOver){G.phase='day';G.step=0;G.reaction=null;let hunter=G.players.find(x=>!x.alive&&x.role==='Jäger'&&!x.status.includes('Jägerschuss erledigt'));if(hunter){hunter.status.push('Jägerschuss erledigt');G.reaction={type:'hunter',actor:hunter.n};}}
+  G.day++;G.night++;G.phase='day';G.step=0;G.reaction=null;G.daybreakPendingWin=true;
+  let hunter=G.players.find(x=>!x.alive&&x.role==='Jäger'&&!x.status.includes('Jägerschuss erledigt'));
+  if(hunter){hunter.status.push('Jägerschuss erledigt');G.reaction={type:'hunter',actor:hunter.n};}
+  G.transition={kind:'daybreak',title:'Ein neuer Tag beginnt …',text:announcements.length?'Tote dieser Nacht in Abwicklungsreihenfolge:':'In dieser Nacht ist niemand gestorben.',deaths:announcements,button:'Tagesbeginn bestätigen'};
   save();render();
 }
 function kill(n,w){
@@ -207,45 +363,63 @@ function kill(n,w){
   if(q.lager==='Wolf'&&q.role!=='Weißer Wolf'){
     G.players.filter(x=>x.role==='Großer böser Wolf').forEach(x=>{if(x.abilities.bigwolf){x.abilities.bigwolf=false;note('🐺 Großer böser Wolf verliert den Zusatzangriff.');}});
   }
-  if(q.role==='Ritter der rostigen Klinge'&&(w==='Nacht')){
-    let target=null;for(let d=1;d<=G.n;d++){let idx=(q.n-1-d+G.n)%G.n,cand=G.players[idx];if(cand.alive&&cand.lager==='Wolf'&&cand.role!=='Weißer Wolf'){target=cand.n;break;}}
-    if(target)G.knightTarget=target;
+  if(q.role==='Urwolf'&&q.abilities.infection){q.abilities.infection=false;note('🧬 Urwolf stirbt – Infektionsfähigkeit verfällt.');}
+  if(q.role==='Ritter der rostigen Klinge'&&['Wolfsangriff','Zusatzangriff des Großen bösen Wolfs'].includes(w)){
+    let target=null;for(let d=1;d<=G.n;d++){let idx=(q.n-1-d+G.n)%G.n,cand=G.players[idx];if(cand.alive&&cand.lager==='Wolf'){target=cand.n;break;}}
+    if(target){G.knightTarget={target,dueNight:G.night+1};note('⚔ Wolf '+target+' erkrankt durch den Ritter und stirbt in Nacht '+(G.night+1)+'.');}
   }
-  if(q.role==='Alter Mann'&&w!=='Nacht'){G.players.filter(x=>x.lager==='Dorf'&&x.role!=='Alter Mann').forEach(x=>x.status.push('Dorffähigkeit verloren (Alter)'));note('🛡 Alter stirbt – Dorffähigkeiten verfallen.');}
-}function finishDay(){
-  // Death chains after daytime execution
-  let changed=true;
-  while(changed){
-    changed=false;
-    for(const q of G.players.filter(x=>!x.alive&&x.verliebt)){
-      let l=P(q.verliebt);if(l?.alive){kill(l.n,'Liebeskummer');changed=true;}
-    }
-    let hunter=G.players.find(x=>!x.alive&&x.role==='Jäger'&&!x.status.includes('Jägerschuss erledigt'));
-    if(hunter){hunter.status.push('Jägerschuss erledigt');G.reaction={type:'hunter',actor:hunter.n};sel.clear();save();render();return;}
-  }
-  if(G.knightTarget&&P(G.knightTarget)?.alive){kill(G.knightTarget,'Ritter der rostigen Klinge');G.knightTarget=null;}
-  if(G.captain&&!P(G.captain)?.alive){G.reaction={type:'captain'};sel.clear();save();render();return;}
-  checkWin();
-  if(!G.gameOver){
-    G.players.filter(x=>x.alive&&x.role==='Wildes Kind'&&x.vorbild&&(!P(x.vorbild)?.alive)&&x.lager==='Dorf').forEach(x=>{
-      x.lager='Wolf';x.status.push('verwandelt – Wolfsrudel');note('🌙 Wildes Kind '+x.n+' verwandelt sich zum Wolf.');
-    });
-    G.phase='night';G.step=0;G.reaction=null;save();render();
-  }
+}function showDaySummary(next){
+  let deaths=[...(G.daySummary||[])];G.daySummary=[];
+  if(!deaths.length){if(next==='victory')showVictory();else showNightStart();return;}
+  G.transition={kind:'event',symbol:'⚖️',title:'Hinrichtungen und Todesfolgen des Tages',text:'Diese Personen sind am Tag gestorben. Erst nach der Bestätigung beginnt die Nacht.',deaths,button:next==='victory'?'Weiter zur Siegerverkündung':'Tagesergebnis bestätigen',next};save();render();
 }
+function finishDay(){
+  if(!Array.isArray(G.daySummary))G.daySummary=[];
+  resolveLoveDeaths(G.daySummary);
+  let hunter=G.players.find(x=>!x.alive&&x.role==='Jäger'&&!x.status.includes('Jägerschuss erledigt'));
+  if(hunter){hunter.status.push('Jägerschuss erledigt');G.reaction={type:'hunter',actor:hunter.n};sel.clear();save();render();return;}
+  let wildChildPending=G.players.some(x=>x.alive&&x.role==='Wildes Kind'&&x.vorbild&&!P(x.vorbild)?.alive&&x.lager==='Dorf');
+  if(!wildChildPending&&checkWin()){cleanupDeadIcons();showDaySummary('victory');return;}
+  if(G.captain&&!P(G.captain)?.alive){G.reaction={type:'captain'};sel.clear();save();render();return;}
+  cleanupDeadIcons();showDaySummary('nightStart');
+}
+function startNextNight(){
+  let changed=false;
+  G.players.filter(x=>x.alive&&x.role==='Wildes Kind'&&x.vorbild&&!P(x.vorbild)?.alive&&x.lager==='Dorf').forEach(x=>{
+    x.lager='Wolf';x.status.push('verwandelt – Wolfsrudel');note('🌙 Wildes Kind '+x.n+' verwandelt sich zum Wolf.');changed=true;
+  });
+  let scheduled=typeof G.knightTarget==='number'?{target:G.knightTarget,dueNight:G.night}:G.knightTarget;
+  if(scheduled&&scheduled.dueNight<=G.night){
+    G.knightTarget=null;changed=true;
+    if(P(scheduled.target)?.alive){
+      let deaths=[];kill(scheduled.target,'Ritter der rostigen Klinge');deaths.push(deathAnnouncement(scheduled.target,'Ritter der rostigen Klinge'));resolveLoveDeaths(deaths);G.nightStartPendingWin=true;
+      let hunter=G.players.find(x=>!x.alive&&x.role==='Jäger'&&!x.status.includes('Jägerschuss erledigt'));
+      if(hunter){hunter.status.push('Jägerschuss erledigt');G.reaction={type:'hunter',actor:hunter.n};}
+      G.transition={kind:'event',symbol:'⚔️',title:'Die rostige Klinge fordert ihr Opfer',text:'Der vorgemerkte Wolf stirbt jetzt zu Beginn der Nacht.',deaths,button:'Todesfolge bestätigen',next:'completeNightStart'};save();render();return;
+    }
+  }
+  if(changed&&checkWin()){showVictory();return;}
+  save();render();
+}
+function completeNightStart(){
+  if(G.reaction){save();render();return;}
+  G.nightStartPendingWin=false;cleanupDeadIcons();if(checkWin()){showVictory();return;}save();render();
+}
+function declareWinner(message){G.gameOver=true;G.victoryText=message;note(message);return true}
 function checkWin(){
-  let alive=G.players.filter(x=>x.alive),wolves=alive.filter(x=>x.lager==='Wolf'),village=alive.filter(x=>x.lager==='Dorf');
+  if(G.gameOver)return true;
+  let alive=G.players.filter(x=>x.alive),wolves=alive.filter(x=>x.lager==='Wolf');
   let white=alive.find(x=>x.role==='Weißer Wolf'),flute=alive.find(x=>x.role==='Flötenspieler');
-  if(white && alive.length===1){G.gameOver=true;note('🏆 Weißer Werwolf gewinnt allein.');return true;}
-  if(white && white.verliebt && alive.length===2 && alive.some(x=>x.n===white.verliebt)){G.gameOver=true;note('🏆 Weißer Werwolf gewinnt als letztes Paar.');return true;}
-  if(flute&&alive.filter(x=>x.n!==flute.n).every(x=>x.verzaubert)){G.gameOver=true;note('🏆 Flötenspieler gewinnt.');return true;}
-  let lovers=alive.filter(x=>x.verliebt);if(lovers.length===2&&lovers.every(x=>x.lager!==lovers.find(y=>y.n!==x.n)?.lager)){G.gameOver=true;note('🏆 Gemischtes Liebespaar gewinnt.');return true;}
-  if(wolves.length===0){G.gameOver=true;note('🏆 Dorf gewinnt.');return true;}
-  if(village.length===0){G.gameOver=true;note('🏆 Wolfsrudel gewinnt.');return true;}
+  if(alive.length===0)return declareWinner('Niemand gewinnt – es gibt keine Überlebenden.');
+  if(white && alive.length===1)return declareWinner('Der Weiße Werwolf gewinnt allein.');
+  if(flute&&alive.filter(x=>x.n!==flute.n).every(x=>x.verzaubert))return declareWinner('Der Flötenspieler gewinnt.');
+  if(alive.length===2&&!alive.some(x=>x.role==='Weißer Wolf')&&alive[0].verliebt===alive[1].n&&alive[1].verliebt===alive[0].n&&alive[0].lager!==alive[1].lager)return declareWinner('Das gemischte Liebespaar gewinnt.');
+  if(wolves.length===0)return declareWinner('Das Dorf gewinnt.');
+  if(alive.every(x=>x.lager==='Wolf')&&wolves.some(x=>x.role!=='Weißer Wolf'))return declareWinner('Das Wolfsrudel gewinnt.');
   return false;
 }
-function skip(){snap();note('Übersprungen: '+cur()[0]);if(cur()[0]==='Tagesbeginn')resolveNight();else{sel.clear();G.step=Math.min(G.step+1,steps().length-1);save();render()}}
-function undo(){if(!G?.hist.length)return;G=JSON.parse(G.hist.pop());sel.clear();save();render()}
+function skip(){let name=cur()[0],label=declineLabel(name);if(!label)return;snap();note(label+': '+name);sel.clear();completeStep(name)}
+function undo(){if(!G?.hist.length)return;let previous=G.hist.pop(),remaining=G.hist;G=JSON.parse(previous);G.hist=remaining;sel.clear();save();render()}
 function note(x){G.log.push(new Date().toLocaleTimeString('de-DE')+' – '+x)}
 function save(){localStorage.setItem('werwolf30',JSON.stringify(G))}
 function loadGame(){let x=localStorage.getItem('werwolf30');if(x){G=JSON.parse(x);sel.clear();render()}}
